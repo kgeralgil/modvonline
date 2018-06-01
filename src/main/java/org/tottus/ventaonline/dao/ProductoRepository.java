@@ -1,4 +1,4 @@
-package bootSample.dao;
+package org.tottus.ventaonline.dao;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import bootSample.model.Producto;
+import org.tottus.ventaonline.model.Producto;
 
 @Repository
 public class ProductoRepository {

@@ -1,10 +1,10 @@
-package bootSample.model.sorter;
+package org.tottus.ventaonline.model.sorter;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import bootSample.model.Producto;
+import org.tottus.ventaonline.model.Producto;
 
 public class ProductoSorterContext {
 

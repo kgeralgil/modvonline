@@ -1,4 +1,4 @@
-package bootSample.controller;
+package org.tottus.ventaonline.controller;
 
 import java.util.List;
 
@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import bootSample.model.Producto;
-import bootSample.model.sorter.ProdFVencimientoSorterStrategy;
-import bootSample.model.sorter.ProductoSorterContext;
-import bootSample.service.ProductoService;
+import org.tottus.ventaonline.model.Producto;
+import org.tottus.ventaonline.model.sorter.ProdFVencimientoSorterStrategy;
+import org.tottus.ventaonline.model.sorter.ProductoSorterContext;
+import org.tottus.ventaonline.service.ProductoService;
 
 @Controller
 public class ProductoController {

@@ -1,4 +1,4 @@
-package bootSample.model;
+package org.tottus.ventaonline.model;
 
 import java.util.Date;
 

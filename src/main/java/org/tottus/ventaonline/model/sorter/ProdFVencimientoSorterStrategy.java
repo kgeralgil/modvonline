@@ -1,9 +1,9 @@
-package bootSample.model.sorter;
+package org.tottus.ventaonline.model.sorter;
 
 import java.util.Comparator;
 import java.util.Date;
 
-import bootSample.model.Producto;
+import org.tottus.ventaonline.model.Producto;
 
 public class ProdFVencimientoSorterStrategy implements Comparator<Producto> {
 
