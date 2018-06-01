@@ -3,6 +3,7 @@ package org.tottus.ventaonline.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,6 +49,8 @@ public class ProductoController {
 		ProductoSorterContext sorterContext = new ProductoSorterContext();
 		sorterContext.setSortStrategy(new ProdFVencimientoSorterStrategy());
 		sorterContext.sortProducto(productosRecomendados);
+		
+		productosRecomendados = productosRecomendados.subList(0, 4);
 		
 		request.setAttribute("productoAgregado", productoService.buscarProdcuctoXId(idProducto));
 		request.setAttribute("productosRecomendados", productosRecomendados);

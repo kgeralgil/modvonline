@@ -84,11 +84,11 @@ public class ProductoRepository {
 	}
 
 	public List<Producto> buscarProductosRecomendadosXIdProducto(int idProducto) {
-		String sql = "SELECT pr.idProducto,pr.codigoProducto, pr.descripcion,"
+		String sql = "SELECT  pr.idProducto,pr.codigoProducto, pr.descripcion,"
 				+ "pr.precioUnitario,pr.imagen,pr.porctMinVenta,pr.fechaVencimiento "
 				+ " FROM productopalabraclave pcc join producto pr on pcc.idProducto=pr.idProducto "
 				+ " where pcc.palabraClave = ( SELECT pc.palabraClave FROM productopalabraclave pc "
-				+ " join producto p on p.idProducto=pc.idProducto where p.idProducto=?)";
+				+ " join producto p on p.idProducto=pc.idProducto where p.idProducto=?) and pr.idProducto != ? ";
 
 		RowMapper<Producto> mapper = new RowMapper<Producto>() {
 			public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -113,7 +113,7 @@ public class ProductoRepository {
 			}
 		};
 
-		return jdbcTemplate.query(sql, new Object[] { idProducto }, mapper);
+		return jdbcTemplate.query(sql, new Object[] { idProducto,idProducto }, mapper);
 	}
 
 }
