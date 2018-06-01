@@ -98,6 +98,7 @@ public class ProductoRepository {
 				producto.setCodigoProducto(rs.getString("pr.codigoProducto"));
 				producto.setDescripcion(rs.getString("pr.descripcion"));
 				producto.setPrecioUnitario(rs.getDouble("pr.precioUnitario"));
+				producto.setFechaVencimiento(rs.getDate("pr.fechaVencimiento"));
 
 				byte[] bytes = rs.getBytes("pr.imagen");
 				byte[] encodeBase64 = Base64.encodeBase64(bytes);

@@ -1,5 +1,7 @@
 package bootSample.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Producto {
 	private String descripcion;
 	private double precioUnitario;
 	private String imagen;
+	private Date fechaVencimiento;
 
 	public Producto() {
 	}
@@ -57,6 +60,14 @@ public class Producto {
 
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
+	}
+
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
 	}
 
 }
