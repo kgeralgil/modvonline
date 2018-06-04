@@ -1,4 +1,4 @@
-package bootSample.service;
+package org.tottus.ventaonline.service;
 
 import java.util.List;
 
@@ -6,9 +6,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import bootSample.dao.ProductoRepository;
-import bootSample.model.Producto;
+import org.tottus.ventaonline.dao.ProductoRepository;
+import org.tottus.ventaonline.model.Producto;
 
 @Service
 @Transactional

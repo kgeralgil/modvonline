@@ -1,4 +1,4 @@
-package bootSample.dao;
+package org.tottus.ventaonline.dao;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
-import bootSample.model.Producto;
+import org.tottus.ventaonline.model.Producto;
 
 @Repository
 public class ProductoRepository {
@@ -85,11 +84,11 @@ public class ProductoRepository {
 	}
 
 	public List<Producto> buscarProductosRecomendadosXIdProducto(int idProducto) {
-		String sql = "SELECT pr.idProducto,pr.codigoProducto, pr.descripcion,"
+		String sql = "SELECT  pr.idProducto,pr.codigoProducto, pr.descripcion,"
 				+ "pr.precioUnitario,pr.imagen,pr.porctMinVenta,pr.fechaVencimiento "
 				+ " FROM productopalabraclave pcc join producto pr on pcc.idProducto=pr.idProducto "
 				+ " where pcc.palabraClave = ( SELECT pc.palabraClave FROM productopalabraclave pc "
-				+ " join producto p on p.idProducto=pc.idProducto where p.idProducto=?)";
+				+ " join producto p on p.idProducto=pc.idProducto where p.idProducto=?) and pr.idProducto != ? ";
 
 		RowMapper<Producto> mapper = new RowMapper<Producto>() {
 			public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -98,6 +97,7 @@ public class ProductoRepository {
 				producto.setCodigoProducto(rs.getString("pr.codigoProducto"));
 				producto.setDescripcion(rs.getString("pr.descripcion"));
 				producto.setPrecioUnitario(rs.getDouble("pr.precioUnitario"));
+				producto.setFechaVencimiento(rs.getDate("pr.fechaVencimiento"));
 
 				byte[] bytes = rs.getBytes("pr.imagen");
 				byte[] encodeBase64 = Base64.encodeBase64(bytes);
@@ -113,7 +113,7 @@ public class ProductoRepository {
 			}
 		};
 
-		return jdbcTemplate.query(sql, new Object[] { idProducto }, mapper);
+		return jdbcTemplate.query(sql, new Object[] { idProducto,idProducto }, mapper);
 	}
 
 }

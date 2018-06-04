@@ -6,7 +6,7 @@
 	<artifactId>modvonline</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bootSample Maven Webapp</name>
+	<name>ventaonline Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -44,6 +44,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>bootSample</finalName>
+		<finalName>ventaonline</finalName>
 	</build>
 </project>
