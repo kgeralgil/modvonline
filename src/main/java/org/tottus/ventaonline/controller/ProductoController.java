@@ -3,11 +3,10 @@ package org.tottus.ventaonline.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tottus.ventaonline.model.Producto;
 import org.tottus.ventaonline.model.sorter.ProdFVencimientoSorterStrategy;
@@ -15,18 +14,19 @@ import org.tottus.ventaonline.model.sorter.ProductoSorterContext;
 import org.tottus.ventaonline.service.ProductoService;
 
 @Controller
+@RequestMapping("/productos")
 public class ProductoController {
 
 	@Autowired
 	private ProductoService productoService;
 
-	@GetMapping("/")
+	@RequestMapping("/")
 	public String home(HttpServletRequest request) {
 		request.setAttribute("modo", "MODO_HOME");
-		return "index";
+		return "busquedaProducto";
 	}
 
-	@GetMapping("/consultar")
+	@RequestMapping("/consultar")
 	public String consultarProductos(@RequestParam String codigoProducto, HttpServletRequest request) {
 
 		List<Producto> productos = productoService.filtrarProductosXNombre(codigoProducto);
@@ -37,10 +37,10 @@ public class ProductoController {
 			request.setAttribute("modo", "MODO_CONSULTA");
 		}
 
-		return "index";
+		return "busquedaProducto";
 	}
 
-	@GetMapping("/agregar")
+	@RequestMapping("/agregar")
 	public String consultarProductos(@RequestParam int idProducto, HttpServletRequest request) {
 		request.setAttribute("modo", "MODO_RECOMENDACION");
 		List<Producto> productosRecomendados = productoService.buscarProductosRecomendadosXIdProducto(idProducto);
@@ -50,7 +50,9 @@ public class ProductoController {
 		sorterContext.setSortStrategy(new ProdFVencimientoSorterStrategy());
 		sorterContext.sortProducto(productosRecomendados);
 		
-		productosRecomendados = productosRecomendados.subList(0, 4);
+		if(productosRecomendados.size() >= 4){
+			productosRecomendados = productosRecomendados.subList(0, 4);
+		}
 		
 		request.setAttribute("productoAgregado", productoService.buscarProdcuctoXId(idProducto));
 		request.setAttribute("productosRecomendados", productosRecomendados);
@@ -59,8 +61,7 @@ public class ProductoController {
 		} else {
 			System.out.println("Prueba----->" + productosRecomendados.size());
 		}
-
-		return "index";
+		return "busquedaProducto";
 	}
 
 }
