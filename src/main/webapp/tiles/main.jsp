@@ -21,7 +21,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<tiles:insertAttribute name="menu" />			
-			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+			<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" style="margin-top: 30px;">
 				<tiles:insertAttribute name="body" />
 				<tiles:insertAttribute name="footer" />			
 			</main>
