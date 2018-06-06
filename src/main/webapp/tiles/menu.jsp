@@ -8,8 +8,8 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#"> 
-					<span data-feather="sells"></span> Ventas
+				<a class="nav-link" href="<c:out value='/descuentos/' />"> 
+					<span data-feather="sells"></span> Descuentos
 				</a>
 			</li>
 			<li class="nav-item">
