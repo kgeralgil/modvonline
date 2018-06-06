@@ -9,11 +9,14 @@
 
 	<title>Sigesu - Tottus</title>
 
-	<!-- Bootstrap CSS -->
+	<!-- JS -->
+	<script src="/jquery-3.3.1.min.js"></script>
+	<script src="/toastr.js"></script>
+	
+	<!-- CSS -->
 	<link rel="stylesheet" href="/bootstrap.min.css" />
-
-	<!-- Custom styles for this template -->
-	<link href="/main.css" rel="stylesheet" />
+	<link rel="stylesheet" href="/toastr.css" />
+	<link rel="stylesheet" href="/main.css" />
 </head>
 
 <body>
@@ -27,5 +30,26 @@
 			</main>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$(function(){
+			toastr.options = {
+			  "positionClass": "toast-top-right",
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			};
+			
+			var msg = "${msg}";
+			if(msg != null && msg != ""){
+				toastr.info(msg)	
+			}
+			
+		});
+	</script>
 </body>
 </html>
