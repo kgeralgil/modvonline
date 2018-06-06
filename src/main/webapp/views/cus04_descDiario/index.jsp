@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<form method="get" action="<c:url value='/descuentos/generar' />">
+<form method="post" action="<c:url value='/descuentos/generar' />">
 	<label>Documento de Identidad</label>
 	<div
 		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -9,8 +9,7 @@
 			<input name="dni" type="text" class="form-control"
 				placeholder="Escribe aqui tu DNI" />
 			<div class="input-group-append">
-				<input class="btn btn-outline-secondary" type="submit"
-					value="Generar" />
+				<input class="btn btn-outline-secondary" type="submit" value="Generar" />
 			</div>
 		</div>
 	</div>
