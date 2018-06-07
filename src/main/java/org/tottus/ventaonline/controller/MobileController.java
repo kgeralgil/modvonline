@@ -1,5 +1,7 @@
 package org.tottus.ventaonline.controller;
 
+import java.net.InetAddress;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,7 @@ public class MobileController {
 	private ProductoService productoService;
 	
 	@GetMapping("/producto/{codigo}")
-	public ResponseEntity<?> buscaProductoPorCodigo(@PathVariable("codigo") String codigo) {
+	public ResponseEntity<?> buscaProductoPorCodigo(@PathVariable("codigo") String codigo) throws Exception {
 
 		try {
 		
@@ -32,6 +34,10 @@ public class MobileController {
                 return ResponseEntity.notFound().build();
             
             mobileResponse.setData(producto);
+            
+            System.out.println(InetAddress.getLocalHost().getHostAddress());
+            
+            
             return ResponseEntity.ok(mobileResponse);
             
         } catch (Exception e) {
