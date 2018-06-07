@@ -82,7 +82,38 @@ public class ProductoRepository {
 		return jdbcTemplate.queryForObject(sql, new Object[] { idProducto }, mapper);
 
 	}
+	
+	public Producto buscarProductoXEtiqueta(String codigoProducto) {
+		
+		try{
+			String sql = "select * from producto where codigoProducto like ?";
+			
+			Producto producto = jdbcTemplate.queryForObject(sql,new RowMapper<Producto>(){
 
+				@Override
+				public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
+					
+					Producto producto = new Producto();
+					producto.setIdProducto(rs.getInt("idProducto"));
+					producto.setCodigoProducto(rs.getString("codigoProducto"));
+					producto.setDescripcion(rs.getString("descripcion"));
+					producto.setPrecioUnitario(rs.getDouble("precioUnitario"));
+					producto.setImagen(rs.getString("imagen"));
+					
+					return producto;
+				}
+				
+			},codigoProducto.trim());
+			
+			return producto;
+			
+		}catch (Exception e){
+            System.out.println("Error en la conexión/sentencia/sintaxis Base de Datos:" + e);
+            throw e;
+        }
+		
+	}
+	
 	public List<Producto> buscarProductosRecomendadosXIdProducto(int idProducto) {
 		String sql = "SELECT  pr.idProducto,pr.codigoProducto, pr.descripcion,"
 				+ "pr.precioUnitario,pr.imagen,pr.porctMinVenta,pr.fechaVencimiento "

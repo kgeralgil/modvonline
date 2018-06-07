@@ -25,6 +25,11 @@ public class ProductoService {
 
 		return productoRepository.buscarProductoXId(idProducto);
 	}
+	
+	public Producto buscarProductoXEtiqueta(String codigoProducto) {
+
+		return productoRepository.buscarProductoXEtiqueta(codigoProducto);
+	}
 
 	public List<Producto> buscarProductosRecomendadosXIdProducto(int idProducto) {
 
