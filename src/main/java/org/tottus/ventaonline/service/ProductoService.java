@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tottus.ventaonline.dao.ProductoRepository;
+import org.tottus.ventaonline.model.ControlPromocion;
 import org.tottus.ventaonline.model.Producto;
 
 @Service
@@ -36,4 +37,7 @@ public class ProductoService {
 		return productoRepository.buscarProductosRecomendadosXIdProducto(idProducto);
 	}
 
+	public int guardarControlDescuentoBusquedaQR(ControlPromocion cp){
+		return productoRepository.guardarControlDescuentoBusquedaQR(cp);
+	}
 }

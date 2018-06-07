@@ -1,6 +1,7 @@
 package org.tottus.ventaonline.dao;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.tottus.ventaonline.model.ControlPromocion;
 import org.tottus.ventaonline.model.Producto;
 
 @Repository
@@ -86,7 +88,8 @@ public class ProductoRepository {
 	public Producto buscarProductoXEtiqueta(String codigoProducto) {
 		
 		try{
-			String sql = "select * from producto where codigoProducto like ?";
+			String sql = " SELECT p.idProducto,p.codigoProducto,p.descripcion, p.marca,p.imagen,p.precioUnitario,pd.tipoDescuento,pd.restriccionCantidad,pd.porcentajeDescuento "
+						+ " FROM bd_tottus.producto p join bd_tottus.productodescuentodiario pd on p.idProducto=pd.idProducto where p.codigoProducto like ?";
 			
 			Producto producto = jdbcTemplate.queryForObject(sql,new RowMapper<Producto>(){
 
@@ -107,6 +110,16 @@ public class ProductoRepository {
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					}
+					
+					producto.setTipoDescuento(rs.getString("tipoDescuento"));
+					producto.setRestriccionCantidad(rs.getInt("restriccionCantidad"));
+					producto.setPorcentajeDescuento(rs.getDouble("porcentajeDescuento"));
+					
+					double preciounitario = producto.getPrecioUnitario();
+					double porcentajeDescuento = producto.getPorcentajeDescuento();
+					double preciodescuento =  preciounitario  - ((preciounitario*porcentajeDescuento)/100);
+					
+					producto.setPrecioUnitarioDescuento(preciodescuento);
 					
 					return producto;
 				}
@@ -154,5 +167,11 @@ public class ProductoRepository {
 
 		return jdbcTemplate.query(sql, new Object[] { idProducto,idProducto }, mapper);
 	}
-
+	
+	public int guardarControlDescuentoBusquedaQR(ControlPromocion cp){  
+	    
+	    String sql = "INSERT INTO controlpromocion (idEquipoMovil,codigoProducto,fechaRegistro,estado) VALUES (?, ?, ?, ?) ";
+	    return jdbcTemplate.update(sql, cp.getIdEquipoMovil(), cp.getCodigoProducto(),cp.getFechaRegistro(), cp.getEstado());
+	     
+	}  
 }
