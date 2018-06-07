@@ -28,6 +28,7 @@ public class DescuentoController {
 	public String generarDescuento(RedirectAttributes redir, @RequestParam String dni) {
 		Map<String, Object> resultado = descuentoService.generarDescuentosDiarios(dni);
 		redir.addFlashAttribute("msg", resultado.get("mensaje"));
+		redir.addFlashAttribute("descuentos", resultado.get("descuentos"));
 		return "redirect:/descuentos/";
 	}
 	

@@ -17,29 +17,28 @@
 
 <div class="container">
 	<div class="row">
-<%-- 		<c:forEach var="producto" items="${productos}"> --%>
+		<c:forEach var="descuento" items="${descuentos}">
 			<div class="card-deck mb-4 text-center">
 				<div class="col-4 col-md">
 					<div class="card mb-4 box-shadow">
 						<div class="card-header">
-<%-- 							<img src="data:image/jpeg;base64,${producto.imagen}" class="img-thumbnail" /> --%>
-<%-- 							<h4 class="my-0 font-weight-normal">${producto.codigoProducto}</h4> --%>
-							<h4 class="my-0 font-weight-normal">TEST</h4>
+							<img src="data:image/jpeg;base64,${descuento.imagen}" class="img-thumbnail" />
+							<h4 class="my-0 font-weight-normal">${descuento.descripcion}</h4>
 						</div>
 						<div class="card-body">
 							<h1 class="card-title pricing-card-title">
-								S/.
-<%-- 								<fmt:formatNumber type="number" minFractionDigits="2" --%>
-<%-- 									maxFractionDigits="2" value="${producto.precioUnitario}" /> --%>
 								<fmt:formatNumber type="number" minFractionDigits="2"
-									maxFractionDigits="2" value="20" />
+ 									maxFractionDigits="2" value="${descuento.porcentajeDescuento}" /> %
+ 									de descuento
 							</h1>
-<%-- 							<p class="card-text">${producto.descripcion}</p> --%>
-								<p class="card-text">PRODUCTO TEST</p>
+							<h3>V&aacute;lido hasta:
+								<fmt:formatDate pattern = "dd/MM/yyyy" value="${descuento.fechaCaducidad}" /> 
+							</h3>
+							<h3>C&oacute;digo de descuento: <span>${descuento.codDescuento}</span></h3>
 						</div>
 					</div>
 				</div>
 			</div>
-<%-- 		</c:forEach> --%>
+		</c:forEach>
 	</div>
 </div>
