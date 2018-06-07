@@ -85,7 +85,7 @@
 									<div class="card-header">
 										<img src="data:image/jpeg;base64,${producto.imagen}"
 											class="img-thumbnail" />
-										<h4 class="my-0 font-weight-normal">${producto.codigoProducto}</h4>
+										<h4 class="my-0 font-weight-normal">${producto.descripcion}</h4>
 									</div>
 									<div class="card-body">
 										<h1 class="card-title pricing-card-title">
@@ -93,7 +93,7 @@
 											<fmt:formatNumber type="number" minFractionDigits="2"
 												maxFractionDigits="2" value="${producto.precioUnitario}" />
 										</h1>
-										<p class="card-text">${producto.descripcion}</p>
+										<p class="card-text">${producto.marca}</p>
 									</div>
 									<a class="btn btn-lg btn-block btn-outline-primary" href="/}">Agregar</a>
 								</div>
