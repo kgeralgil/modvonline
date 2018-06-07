@@ -98,7 +98,15 @@ public class ProductoRepository {
 					producto.setCodigoProducto(rs.getString("codigoProducto"));
 					producto.setDescripcion(rs.getString("descripcion"));
 					producto.setPrecioUnitario(rs.getDouble("precioUnitario"));
-					producto.setImagen(rs.getString("imagen"));
+					byte[] bytes = rs.getBytes("imagen");
+					byte[] encodeBase64 = Base64.encodeBase64(bytes);
+					String base64Encoded;
+					try {
+						base64Encoded = new String(encodeBase64, "UTF-8");
+						producto.setImagen(base64Encoded);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 					
 					return producto;
 				}
