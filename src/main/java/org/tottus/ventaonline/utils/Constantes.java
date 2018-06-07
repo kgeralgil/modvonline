@@ -9,5 +9,6 @@ public class Constantes {
 	public static final String ERR_SOLO_NUMEROS = "El valor ingresado debe contener solo números.";
 	public static final String ERR_CANTIDAD_INEXACTA = "Longitud inadecuada para el campo.";
 	public static final String ERR_CAMPO_NULO = "No se ha ingresado ningún valor.";
+	public static final String ERR_DNI_YA_GENERO_DESCUENTOS = "Usted ya generó sus descuentos del día, inténtelo nuevamente mañana.";
 	
 }

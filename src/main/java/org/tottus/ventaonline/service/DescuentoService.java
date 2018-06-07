@@ -7,7 +7,9 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.tottus.ventaonline.dao.DescuentoRepository;
 import org.tottus.ventaonline.utils.Constantes;
 import org.tottus.ventaonline.utils.validation.ValidationContext;
 import org.tottus.ventaonline.utils.validation.ValidationType;
@@ -17,19 +19,22 @@ import org.tottus.ventaonline.utils.validation.Validator;
 @Transactional
 public class DescuentoService {
 
+	@Autowired
+	private DescuentoRepository descuentoRepository;
+	
 	public Map<String, Object> generarDescuentosDiarios(String dni){
 		Map<String, Object> resultado = new HashMap<>();
 		// Validar DNI
 		String resultadoVal = Validator.validate(validacionesDNI(dni));
 		
 		// Validar que sea su primera vez en el dia
-		if(!resultadoVal.isEmpty()){
-			
-		}
-		
-		// Generar Descuento Aleatorio
-		if(!resultadoVal.isEmpty()){
-			
+		if(resultadoVal.isEmpty()){
+			if(0<descuentoRepository.validarDescuentoDNI(dni)){
+				resultadoVal = Constantes.ERR_DNI_YA_GENERO_DESCUENTOS;
+			} else {
+				// Generar Descuento Aleatorio
+				resultado.put("descuentos", descuentoRepository.generarDescuentosDiarios(dni));
+			}
 		}
 		resultado.put("mensaje", resultadoVal);
 		return resultado;
@@ -54,7 +59,7 @@ public class DescuentoService {
 				new ValidationContext()
 				.fieldName("DNI")
 				.fieldValue(dni)
-				.fieldSize(7)
+				.fieldSize(8)
 				.message(Constantes.ERR_CANTIDAD_INEXACTA)
 				.validationType(ValidationType.EXACT_SIZE));
 		return validaciones;
