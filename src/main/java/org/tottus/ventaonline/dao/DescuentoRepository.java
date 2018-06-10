@@ -27,7 +27,7 @@ public class DescuentoRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public Integer validarDescuentoDNI(String dni) {
+	public synchronized Integer validarDescuentoDNI(String dni) {
 		String sql = 
 				"select count(1) as descuentosGenerados from productodescuentodiariocliente pddc "
 				+ "inner join descuentodiariocliente ddc on "
