@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.tottus.ventaonline.model.ControlPromocion;
 import org.tottus.ventaonline.model.Producto;
 
 @Repository
@@ -82,7 +83,59 @@ public class ProductoRepository {
 		return jdbcTemplate.queryForObject(sql, new Object[] { idProducto }, mapper);
 
 	}
+	
+	public Producto buscarProductoXEtiqueta(String codigoProducto) {
+		
+		try{
+			String sql = " SELECT p.idProducto,p.codigoProducto,p.descripcion,p.marca,"
+						+ "p.imagen,p.precioUnitario,pd.tipoDescuento,pd.restriccionCantidad,pd.porcentajeDescuento "
+						+ " FROM producto p join productodescuentodiario pd on p.idProducto=pd.idProducto "
+						+ "where p.descripcion like ?";
+			
+			Producto producto = jdbcTemplate.queryForObject(sql,new RowMapper<Producto>(){
 
+				@Override
+				public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
+					
+					Producto producto = new Producto();
+					producto.setIdProducto(rs.getInt("idProducto"));
+					producto.setCodigoProducto(rs.getString("codigoProducto"));
+					producto.setDescripcion(rs.getString("descripcion"));
+					producto.setPrecioUnitario(rs.getDouble("precioUnitario"));
+					byte[] bytes = rs.getBytes("imagen");
+					byte[] encodeBase64 = Base64.encodeBase64(bytes);
+					String base64Encoded;
+					try {
+						base64Encoded = new String(encodeBase64, "UTF-8");
+						producto.setImagen(base64Encoded);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+					
+					producto.setTipoDescuento(rs.getString("tipoDescuento"));
+					producto.setRestriccionCantidad(rs.getInt("restriccionCantidad"));
+					producto.setPorcentajeDescuento(rs.getDouble("porcentajeDescuento"));
+					
+					double preciounitario = producto.getPrecioUnitario();
+					double porcentajeDescuento = producto.getPorcentajeDescuento();
+					double preciodescuento =  preciounitario  - ((preciounitario*porcentajeDescuento)/100);
+					
+					producto.setPrecioUnitarioDescuento(preciodescuento);
+					
+					return producto;
+				}
+				
+			},codigoProducto.trim());
+			
+			return producto;
+			
+		}catch (Exception e){
+            System.out.println("Error en la conexión/sentencia/sintaxis Base de Datos:" + e);
+            throw e;
+        }
+		
+	}
+	
 	public List<Producto> buscarProductosRecomendadosXIdProducto(int idProducto) {
 		String sql = "SELECT  pr.idProducto,pr.codigoProducto, pr.descripcion,"
 				+ "pr.precioUnitario,pr.imagen,pr.fechaVencimiento, pr.marca "
@@ -116,5 +169,11 @@ public class ProductoRepository {
 
 		return jdbcTemplate.query(sql, new Object[] { idProducto,idProducto }, mapper);
 	}
-
+	
+	public int guardarControlDescuentoBusquedaQR(ControlPromocion cp){  
+	    
+	    String sql = "INSERT INTO controlpromocion (idEquipoMovil,codigoProducto,fechaRegistro,estado) VALUES (?, ?, ?, ?) ";
+	    return jdbcTemplate.update(sql, cp.getIdEquipoMovil(), cp.getCodigoProducto(),cp.getFechaRegistro(), cp.getEstado());
+	     
+	}  
 }

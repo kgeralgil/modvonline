@@ -14,20 +14,17 @@ import org.tottus.ventaonline.model.Producto;
 public class ProductoService {
 
 	@Autowired
-	ProductoRepository productoRepository;
+	private ProductoRepository productoRepository;
 
 	public List<Producto> filtrarProductosXNombre(String codigoProducto) {
-
 		return productoRepository.filtrarProductosXNombre(codigoProducto);
 	}
 
 	public Producto buscarProdcuctoXId(int idProducto) {
-
 		return productoRepository.buscarProductoXId(idProducto);
 	}
 
 	public List<Producto> buscarProductosRecomendadosXIdProducto(int idProducto) {
-
 		return productoRepository.buscarProductosRecomendadosXIdProducto(idProducto);
 	}
 

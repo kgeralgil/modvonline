@@ -10,8 +10,8 @@ public class Util {
 		return resultado;
 	}
 	
-	public static void main(String[] args){
-//		System.out.println(isNullOrEmpty(2.5f));
+	public static String objectToString(Object string){
+		return (string == null) ? "" : string.toString();
 	}
 	
 }

@@ -19,7 +19,12 @@ public class Producto {
 	private String imagen;
 	private String marca;
 	private Date fechaVencimiento;
-
+	
+	private String tipoDescuento;
+	private int restriccionCantidad;
+	private double porcentajeDescuento;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+	private double precioUnitarioDescuento;
+	
 	public Producto() {
 	}
 
@@ -78,5 +83,39 @@ public class Producto {
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
+
+	public String getTipoDescuento() {
+		return tipoDescuento;
+	}
+
+	public void setTipoDescuento(String tipoDescuento) {
+		this.tipoDescuento = tipoDescuento;
+	}
+
+	public int getRestriccionCantidad() {
+		return restriccionCantidad;
+	}
+
+	public void setRestriccionCantidad(int restriccionCantidad) {
+		this.restriccionCantidad = restriccionCantidad;
+	}
+
+	public double getPorcentajeDescuento() {
+		return porcentajeDescuento;
+	}
+
+	public void setPorcentajeDescuento(double porcentajeDescuento) {
+		this.porcentajeDescuento = porcentajeDescuento;
+	}
+
+	public double getPrecioUnitarioDescuento() {
+		return precioUnitarioDescuento;
+	}
+
+	public void setPrecioUnitarioDescuento(double precioUnitarioDescuento) {
+		this.precioUnitarioDescuento = precioUnitarioDescuento;
+	}
+	
+	
 
 }
