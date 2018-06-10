@@ -20,7 +20,7 @@ public class DescuentoController {
 	private DescuentoService descuentoService;
 	
 	@RequestMapping("/")
-	public String inicio() {
+	public String index() {
 		return VIEW_SUFFIX + "principal";
 	}
 	

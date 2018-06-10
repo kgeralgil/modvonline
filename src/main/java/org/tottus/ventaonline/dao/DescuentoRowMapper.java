@@ -8,19 +8,19 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.jdbc.core.RowMapper;
 import org.tottus.ventaonline.model.Descuento;
 
-public class DescuentoRowMapper implements RowMapper {
+public class DescuentoRowMapper implements RowMapper<Descuento> {
 
 	/**
 	 * Maps the result set rows to a Claim object
 	 */
-	public Object mapRow(ResultSet rs, int index) throws SQLException {
+	public Descuento mapRow(ResultSet rs, int index) throws SQLException {
 		Descuento descuento = new Descuento();
-		descuento.setIdProducto(rs.getInt(1));
-		descuento.setDescripcion(rs.getString(2));
-		descuento.setMarca(rs.getString(3));
-		descuento.setPrecioUnitario(rs.getDouble(4));
-		descuento.setPorcentajeDescuento(rs.getDouble(5));
-		descuento.setRestriccionCantidad(rs.getInt(6));
+		descuento.setIdProducto(rs.getInt("idProducto"));
+		descuento.setDescripcion(rs.getString("descripcion"));
+		descuento.setMarca(rs.getString("marca"));
+		descuento.setPrecioUnitario(rs.getDouble("precioUnitario"));
+		descuento.setPorcentajeDescuento(rs.getDouble("pctDescuento"));
+		descuento.setRestriccionCantidad(rs.getInt("unidadesProdDescuento"));
 		byte[] bytes = rs.getBytes("imagen");
 		byte[] encodeBase64 = Base64.encodeBase64(bytes);
 		String base64Encoded;
@@ -31,7 +31,9 @@ public class DescuentoRowMapper implements RowMapper {
 			e.printStackTrace();
 		}
 		descuento.calcularFechaCaducidad();
-		descuento.setCodDescuento(rs.getString(8));
+		descuento.setCodDescuento(rs.getString("codDescuento"));
+		descuento.setPrecioDescuento(rs.getDouble("precioDescuento"));
+		descuento.setDiasVigencia(rs.getInt("diasVigencia"));
 		return descuento;
 	}
 	

@@ -12,9 +12,11 @@ public class Descuento {
 	private Double precioUnitario;
 	private Double porcentajeDescuento;
 	private int restriccionCantidad;
+	private int diasVigencia;
 	private String imagen;
 	private Date fechaCaducidad;
 	private String codDescuento;
+	private Double precioDescuento;
 	
 	public int getIdProducto() {
 		return idProducto;
@@ -65,15 +67,26 @@ public class Descuento {
 		this.fechaCaducidad = fechaCaducidad;
 	}
 	public void calcularFechaCaducidad(){
-		LocalDate localDate = LocalDate.now().plusDays(this.restriccionCantidad);
+		LocalDate localDate = LocalDate.now().plusDays(this.diasVigencia);
 		setFechaCaducidad(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
 	public String getCodDescuento() {
 		return codDescuento;
 	}
 	public void setCodDescuento(String codDescuento) {
-		String zeroPad = String.format("%03d", Integer.parseInt(codDescuento));
-		this.codDescuento = "DESC" + zeroPad;
+		this.codDescuento = codDescuento;
+	}
+	public Double getPrecioDescuento() {
+		return precioDescuento;
+	}
+	public void setPrecioDescuento(Double precioDescuento) {
+		this.precioDescuento = precioDescuento;
+	}
+	public int getDiasVigencia() {
+		return diasVigencia;
+	}
+	public void setDiasVigencia(int diasVigencia) {
+		this.diasVigencia = diasVigencia;
 	}
 	
 }

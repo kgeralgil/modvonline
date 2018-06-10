@@ -4,7 +4,7 @@ public class MobileResponse {
 
 	private int code;
 	private String message;
-	private Producto data;
+	private Descuento data;
 	
 	public int getCode() {
 		return code;
@@ -18,10 +18,10 @@ public class MobileResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public Producto getData() {
+	public Descuento getData() {
 		return data;
 	}
-	public void setData(Producto data) {
+	public void setData(Descuento data) {
 		this.data = data;
 	}
 	

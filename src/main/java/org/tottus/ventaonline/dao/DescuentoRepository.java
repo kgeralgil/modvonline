@@ -1,5 +1,6 @@
 package org.tottus.ventaonline.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,11 +16,13 @@ import org.tottus.ventaonline.model.Descuento;
 public class DescuentoRepository {
 
 	private DescuentoSP descuentoSP;
+	private DescuentoQRSP descuentoQRSP;
 	private JdbcTemplate jdbcTemplate;
 	
 	@PostConstruct
 	public void postConstruct() {
 		descuentoSP = new DescuentoSP(jdbcTemplate);
+		descuentoQRSP = new DescuentoQRSP(jdbcTemplate);
 	}
 	
 	@Autowired
@@ -41,6 +44,17 @@ public class DescuentoRepository {
 		List<Descuento> result = null;
 		Map<String, Object> data = descuentoSP.generarDescuentosDiarios(dni);
 		result = (List<Descuento>) data.get("result_list");
+		return result;
+	}
+	
+	public Map<String, Object> obtainQRDiscount(String codDiscount, String deviceId){
+		Map<String, Object> result = new HashMap<>();
+		try {
+			result = descuentoQRSP.generateQRDiscount(codDiscount, deviceId); 
+		} catch (Exception e){
+			result.put("codResultado", 1);
+			result.put("msgResultado", "Error generico");
+		}
 		return result;
 	}
 	

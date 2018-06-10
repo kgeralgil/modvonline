@@ -1,7 +1,6 @@
 package org.tottus.ventaonline.dao;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -88,8 +87,10 @@ public class ProductoRepository {
 	public Producto buscarProductoXEtiqueta(String codigoProducto) {
 		
 		try{
-			String sql = " SELECT p.idProducto,p.codigoProducto,p.descripcion, p.marca,p.imagen,p.precioUnitario,pd.tipoDescuento,pd.restriccionCantidad,pd.porcentajeDescuento "
-						+ " FROM bd_tottus.producto p join bd_tottus.productodescuentodiario pd on p.idProducto=pd.idProducto where p.codigoProducto like ?";
+			String sql = " SELECT p.idProducto,p.codigoProducto,p.descripcion,p.marca,"
+						+ "p.imagen,p.precioUnitario,pd.tipoDescuento,pd.restriccionCantidad,pd.porcentajeDescuento "
+						+ " FROM producto p join productodescuentodiario pd on p.idProducto=pd.idProducto "
+						+ "where p.descripcion like ?";
 			
 			Producto producto = jdbcTemplate.queryForObject(sql,new RowMapper<Producto>(){
 
