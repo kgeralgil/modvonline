@@ -17,6 +17,7 @@ public class Producto {
 	private String descripcion;
 	private double precioUnitario;
 	private String imagen;
+	private String marca;
 	private Date fechaVencimiento;
 	
 	private String tipoDescuento;
@@ -73,6 +74,14 @@ public class Producto {
 
 	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
+		this.marca = marca;
 	}
 
 	public String getTipoDescuento() {

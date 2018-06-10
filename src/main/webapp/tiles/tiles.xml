@@ -19,5 +19,10 @@
 	<definition name="busquedaProducto" extends="mainLayout">
 		<put-attribute name="body" value="/views/busquedaProducto.jsp" />
 	</definition>
+	
+	<!-- Descuento Diario -->
+	<definition name="descuento-principal" extends="mainLayout">
+		<put-attribute name="body" value="/views/cus04_descDiario/index.jsp" />
+	</definition>
 
 </tiles-definitions>

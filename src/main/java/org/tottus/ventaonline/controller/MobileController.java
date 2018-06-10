@@ -24,10 +24,10 @@ public class MobileController {
 	private ProductoService productoService;
 	
 	@GetMapping("/producto/{codigo}/movil/{idmovil}")
-	public ResponseEntity<?> buscaProductoPorCodigo(@PathVariable("codigo") String codigo, @PathVariable("idmovil") String idmovil) throws Exception {
+	public ResponseEntity<?> buscaProductoPorCodigo(@PathVariable("codigo") String codigo, 
+			@PathVariable("idmovil") String idmovil) throws Exception {
 
 		try {
-		
 			MobileResponse mobileResponse = new MobileResponse();
 			mobileResponse.setCode(100);
 			mobileResponse.setMessage("Prueba de Webservice");
@@ -41,7 +41,6 @@ public class MobileController {
 			cp.setEstado("A");
 			
 			productoService.guardarControlDescuentoBusquedaQR(cp);
-			
 			
             Producto producto = productoService.buscarProductoXEtiqueta(codigo);
 
