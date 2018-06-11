@@ -117,5 +117,39 @@ public class ProductoRepository {
 
 		return jdbcTemplate.query(sql, new Object[] { idProducto,idProducto }, mapper);
 	}
+
+	public List<Producto> searchProductsByVoice(String...textPhrase) {
+		String[] jdbcParams = new String[textPhrase.length];
+		jdbcParams[0] =  "%" + textPhrase[0] + "%";
+		String sql = "select * from producto where concat(descripcion,marca) like ? ";
+		for(int i = 1; i<textPhrase.length; i++){
+			sql += "or concat(descripcion,marca) like ? ";
+			jdbcParams[i] =  "%" + textPhrase[i] + "%";
+		}
+
+		RowMapper<Producto> mapper = new RowMapper<Producto>() {
+			public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Producto producto = new Producto();
+				producto.setIdProducto(rs.getInt("idProducto"));
+				producto.setCodigoProducto(rs.getString("codigoProducto"));
+				producto.setDescripcion(rs.getString("descripcion"));
+				producto.setPrecioUnitario(rs.getDouble("precioUnitario"));
+
+				byte[] bytes = rs.getBytes("imagen");
+				byte[] encodeBase64 = Base64.encodeBase64(bytes);
+				String base64Encoded;
+				try {
+					base64Encoded = new String(encodeBase64, "UTF-8");
+					producto.setImagen(base64Encoded);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+
+				return producto;
+			}
+		};
+		return jdbcTemplate.query(sql, jdbcParams, mapper);
+
+	}
 	
 }

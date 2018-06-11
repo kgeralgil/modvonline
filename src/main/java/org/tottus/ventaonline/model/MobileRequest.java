@@ -8,12 +8,20 @@ public class MobileRequest {
 
 	@JsonProperty("idmovil")
 	private String idmovil;
+	@JsonProperty("textPhrase")
+	private String[] textPhrase;
 	
 	public String getIdmovil() {
 		return idmovil;
 	}
 	public void setIdmovil(String idmovil) {
 		this.idmovil = idmovil;
+	}
+	public String[] getTextPhrase() {
+		return textPhrase;
+	}
+	public void setTextPhrase(String[] textPhrase) {
+		this.textPhrase = textPhrase;
 	}
 	
 }
