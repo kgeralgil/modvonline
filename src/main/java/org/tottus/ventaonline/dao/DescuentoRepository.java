@@ -30,24 +30,23 @@ public class DescuentoRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public synchronized Integer validarDescuentoDNI(String dni) {
+	public Integer validarDescuentoDNI(String dni) {
 		String sql = 
-				"select count(1) as descuentosGenerados from productodescuentodiariocliente pddc "
-				+ "inner join descuentodiariocliente ddc on "
-				+ "pddc.idDescuentoDiarioCliente = ddc.idDescuentoDiarioCliente " 
-				+ "where ddc.dni = ? and date(ddc.fecha) = date(now())";
+				"select count(1) as descuentosGenerados from productodescuentogenerado pdg "
+				+ "inner join descuentogenerado dg on pdg.idDescuentoGenerado = dg.idDescuentoGenerado "
+				+ "where dg.dni = ? and date(dg.fecha) = date(now())";
 		return jdbcTemplate.queryForObject(sql, new Object[] { dni }, Integer.class);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Descuento> generarDescuentosDiarios(String dni) {
+	public synchronized List<Descuento> generarDescuentosDiarios(String dni) {
 		List<Descuento> result = null;
 		Map<String, Object> data = descuentoSP.generarDescuentosDiarios(dni);
 		result = (List<Descuento>) data.get("result_list");
 		return result;
 	}
 	
-	public Map<String, Object> obtainQRDiscount(String codDiscount, String deviceId){
+	public synchronized Map<String, Object> obtainQRDiscount(String codDiscount, String deviceId){
 		Map<String, Object> result = new HashMap<>();
 		try {
 			result = descuentoQRSP.generateQRDiscount(codDiscount, deviceId); 
