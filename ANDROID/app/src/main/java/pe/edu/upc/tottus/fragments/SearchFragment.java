@@ -2,6 +2,8 @@ package pe.edu.upc.tottus.fragments;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -24,6 +27,7 @@ import pe.edu.upc.tottus.R;
 import pe.edu.upc.tottus.activities.ScanActivity;
 import pe.edu.upc.tottus.network.ApiService;
 import pe.edu.upc.tottus.utils.DeviceUtil;
+import pe.edu.upc.tottus.utils.ImageUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +38,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     FloatingActionButton fab;
     TextView txtSku;
+    ImageView productImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +47,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         fab = (FloatingActionButton) view.findViewById(R.id.fabScan);
         txtSku = (TextView) view.findViewById(R.id.product_name);
+        productImage = (ImageView) view.findViewById(R.id.product_image);
 
         fab.setOnClickListener(this);
 
@@ -50,7 +56,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        startActivityForResult(new Intent(getContext(), ScanActivity.class), REQUEST_CODE);
+       // startActivityForResult(new Intent(getContext(), ScanActivity.class), REQUEST_CODE);
+        Bitmap bm = ImageUtil.decodeBase64(ApiService.IMAGE);
+        productImage.setImageBitmap(bm);
     }
 
     @Override
@@ -75,12 +83,14 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if (100 == Integer.parseInt(response.getString("coed"))) {
+                            if (100 != Integer.parseInt(response.getString("code"))) {
                                 Log.e(getString(R.string.app_name), response.getString("message"));
                                 return;
                             }
 
-                            /*sourceList = Source.from(response.getJSONArray("data"));
+
+
+                            /*sourceList = Product.from(response.getJSONArray("data"));
                             sourcesAdapter.setSourceList(sourceList);
                             sourcesAdapter.notifyDataSetChanged();*/
                         } catch (JSONException e) {
