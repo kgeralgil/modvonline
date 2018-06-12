@@ -30,12 +30,19 @@ public class DescuentoRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public Integer validarDescuentoDNI(String dni) {
+	public Integer validateDiscountAlreadyGenerated(String dni) {
 		String sql = 
 				"select count(1) as descuentosGenerados from productodescuentogenerado pdg "
 				+ "inner join descuentogenerado dg on pdg.idDescuentoGenerado = dg.idDescuentoGenerado "
 				+ "where dg.dni = ? and date(dg.fecha) = date(now())";
 		return jdbcTemplate.queryForObject(sql, new Object[] { dni }, Integer.class);
+	}
+	
+	public Integer validateExistingDNI(String dni){
+		String sql = "select count(1) from persona where "
+				+ "idTipoDocumentoIdentidad = 1 and numeroDocumentoIdentidad = ?";
+		return jdbcTemplate.queryForObject(sql, new Object[] { dni }, Integer.class);
+		
 	}
 	
 	@SuppressWarnings("unchecked")

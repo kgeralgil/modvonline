@@ -29,7 +29,9 @@ public class DescuentoService {
 		
 		// Validar que sea su primera vez en el dia
 		if(resultadoVal.isEmpty()){
-			if(0<descuentoRepository.validarDescuentoDNI(dni)){
+			if(0 == descuentoRepository.validateExistingDNI(dni)){
+				resultadoVal = Constantes.ERR_DNI_NO_REGISTRADO;
+			} else if(0<descuentoRepository.validateDiscountAlreadyGenerated(dni)){
 				resultadoVal = Constantes.ERR_DNI_YA_GENERO_DESCUENTOS;
 			} else {
 				// Generar Descuento Aleatorio
