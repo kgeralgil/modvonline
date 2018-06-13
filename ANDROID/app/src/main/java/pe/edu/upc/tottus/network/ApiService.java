@@ -6,7 +6,7 @@ package pe.edu.upc.tottus.network;
 
 public class ApiService {
 
-    public static String DOMAIN = "http://localhost:8080";
+    public static String DOMAIN = "http://192.168.1.6:8080";
     public static String PRODUCT_URL = DOMAIN + "/rest/producto/";
 
 

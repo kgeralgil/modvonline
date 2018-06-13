@@ -16,7 +16,7 @@ public class Product {
     private String code;
     private String name;
     private String description;
-    private String url;
+    private String image;
     private String category;
     private String price;
     private String country;
@@ -25,8 +25,17 @@ public class Product {
     private String quantityRestriction;
     private String discount;
     private String unitPriceDis;
-
+    private String validDays;
     private List<String> sortByAvailable;
+
+    public String getValidDays() {
+        return validDays;
+    }
+
+    public Product setValidDays(String validDays) {
+        this.validDays = validDays;
+        return this;
+    }
 
     public String getDueDate() {
         return dueDate;
@@ -109,12 +118,12 @@ public class Product {
         return this;
     }
 
-    public String getUrl() {
-        return url;
+    public String getImage() {
+        return image;
     }
 
-    public Product setUrl(String url) {
-        this.url = url;
+    public Product setImage(String image) {
+        this.image = image;
         return this;
     }
 
@@ -154,11 +163,11 @@ public class Product {
         return this;
     }
 
-    public Product(String id, String name, String description, String url, String category, String price, String country, List<String> sortByAvailable) {
+    public Product(String id, String name, String description, String image, String category, String price, String country, List<String> sortByAvailable) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.url = url;
+        this.image = image;
         this.category = category;
         this.price = price;
         this.country = country;
@@ -173,7 +182,7 @@ public class Product {
         bundle.putString("id", id);
         bundle.putString("name", name);
         bundle.putString("description", description);
-        bundle.putString("url", url);
+        bundle.putString("image", image);
         bundle.putString("category", category);
         bundle.putString("price", price);
         bundle.putString("country", country);
@@ -186,7 +195,7 @@ public class Product {
         product.setId(bundle.getString("id"))
                 .setName(bundle.getString("name"))
                 .setDescription(bundle.getString("desription"))
-                .setUrl(bundle.getString("url"))
+                .setImage(bundle.getString("image"))
                 .setCategory(bundle.getString("category"))
                 .setPrice(bundle.getString("price"))
                 .setCountry(bundle.getString("country"))
@@ -197,25 +206,18 @@ public class Product {
     public static Product from(JSONObject jsonSource){
         Product product = new Product();
         try {
-            List<String> sortByAvailable = new ArrayList<>();
-            JSONArray jsonArray = jsonSource.getJSONArray("sortBysAvailable");
-            for(int i = 0; i < jsonArray.length(); i++)
-                sortByAvailable.add(jsonArray.getString(i));
 
             product.setId(jsonSource.getString("idProducto"))
-                    .setCode(jsonSource.getString("codigoProducto"))
-                    .setName(jsonSource.getString("name"))
                     .setDescription(jsonSource.getString("descripcion"))
-                    .setUrl(jsonSource.getString("imagen"))
-                    .setCategory(jsonSource.getString("category"))
+                    .setName(jsonSource.getString("marca"))
                     .setPrice(jsonSource.getString("precioUnitario"))
-                    .setCountry(jsonSource.getString("country"))
-                    .setDueDate(jsonSource.getString("fechaVencimiento"))
-                    .setDiscountType(jsonSource.getString("tipoDescuento"))
-                    .setQuantityRestriction(jsonSource.getString("restriccionCantidad"))
                     .setDiscount(jsonSource.getString("porcentajeDescuento"))
-                    .setUnitPriceDis(jsonSource.getString("precioUnitarioDescuento"))
-                    .setSortByAvailable(sortByAvailable) ;
+                    .setQuantityRestriction(jsonSource.getString("restriccionCantidad"))
+                    .setValidDays(jsonSource.getString("diasVigencia"))
+                    .setImage(jsonSource.getString("imagen"))
+                    .setDueDate(jsonSource.getString("fechaCaducidad"))
+                    .setCode(jsonSource.getString("codDescuento"))
+                    .setUnitPriceDis(jsonSource.getString("precioDescuento"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
