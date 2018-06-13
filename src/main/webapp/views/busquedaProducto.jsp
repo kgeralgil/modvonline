@@ -20,7 +20,7 @@
 	<c:choose>
 		<c:when test="${modo=='MODO_HOME'}"></c:when>
 		<c:when test="${modo=='MODO_VACIO'}">
-			<h1>No se encontro algun producto relacionado a la consulta!</h1>
+			<h1>No se encontró algun producto relacionado a la consulta!</h1>
 		</c:when>
 		<c:when test="${modo=='MODO_CONSULTA'}">
 			<div class="row">
@@ -32,7 +32,7 @@
 									<img src="data:image/jpeg;base64,${producto.imagen}"
 										class="img-thumbnail" />
 									<h4 class="my-0 font-weight-normal">
-										${producto.codigoProducto}</h4>
+										${producto.descripcion}</h4>
 								</div>
 								<div class="card-body">
 									<h1 class="card-title pricing-card-title">
@@ -40,7 +40,7 @@
 										<fmt:formatNumber type="number" minFractionDigits="2"
 											maxFractionDigits="2" value="${producto.precioUnitario}" />
 									</h1>
-									<p class="card-text">${producto.descripcion}</p>
+									<p class="card-text">${producto.marca}</p>
 								</div>
 
 								<c:url value="/productos/agregar" var="agregarURL">
@@ -60,7 +60,7 @@
 					<div class="card-header">
 						<img src="data:image/jpeg;base64,${productoAgregado.imagen}"
 							class="img-thumbnail" />
-						<h4 class="my-0 font-weight-normal">${productoAgregado.codigoProducto}</h4>
+						<h4 class="my-0 font-weight-normal">${productoAgregado.descripcion}</h4>
 					</div>
 					<div class="card-body">
 						<h1 class="card-title pricing-card-title">
@@ -68,14 +68,14 @@
 							<fmt:formatNumber type="number" minFractionDigits="2"
 								maxFractionDigits="2" value="${productoAgregado.precioUnitario}" />
 						</h1>
-						<p class="card-text">${productoAgregado.descripcion}</p>
+						<p class="card-text">${productoAgregado.marca}</p>
 					</div>
 					<a class="btn btn-lg btn-block btn-outline-primary" href="/">Agregar</a>
 				</div>
 			</div>
 
 			<c:if test="${recomendacion=='MODO_LISTA'}">
-				<h2>Otros Productos que podrian interesarte</h2>
+				<h2>Otros productos que te podrian interesar</h2>
 				<br />
 				<div class="row">
 					<c:forEach var="producto" items="${productosRecomendados}">
@@ -85,7 +85,7 @@
 									<div class="card-header">
 										<img src="data:image/jpeg;base64,${producto.imagen}"
 											class="img-thumbnail" />
-										<h4 class="my-0 font-weight-normal">${producto.codigoProducto}</h4>
+										<h4 class="my-0 font-weight-normal">${producto.descripcion}</h4>
 									</div>
 									<div class="card-body">
 										<h1 class="card-title pricing-card-title">
@@ -93,7 +93,7 @@
 											<fmt:formatNumber type="number" minFractionDigits="2"
 												maxFractionDigits="2" value="${producto.precioUnitario}" />
 										</h1>
-										<p class="card-text">${producto.descripcion}</p>
+										<p class="card-text">${producto.marca}</p>
 									</div>
 									<a class="btn btn-lg btn-block btn-outline-primary" href="/}">Agregar</a>
 								</div>

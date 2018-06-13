@@ -25,7 +25,7 @@ public class ProductoRepository {
 
 	public List<Producto> filtrarProductosXNombre(String codigoProducto) {
 
-		String sql = "select * from producto where codigoProducto like ?";
+		String sql = "select * from producto where descripcion like ?";
 
 		RowMapper<Producto> mapper = new RowMapper<Producto>() {
 			public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -34,6 +34,7 @@ public class ProductoRepository {
 				producto.setCodigoProducto(rs.getString("codigoProducto"));
 				producto.setDescripcion(rs.getString("descripcion"));
 				producto.setPrecioUnitario(rs.getDouble("precioUnitario"));
+				producto.setMarca(rs.getString("marca"));
 
 				byte[] bytes = rs.getBytes("imagen");
 				byte[] encodeBase64 = Base64.encodeBase64(bytes);
@@ -64,7 +65,8 @@ public class ProductoRepository {
 				producto.setCodigoProducto(rs.getString("codigoProducto"));
 				producto.setDescripcion(rs.getString("descripcion"));
 				producto.setPrecioUnitario(rs.getDouble("precioUnitario"));
-
+				producto.setMarca(rs.getString("marca"));
+				
 				byte[] bytes = rs.getBytes("imagen");
 				byte[] encodeBase64 = Base64.encodeBase64(bytes);
 				String base64Encoded;
@@ -84,8 +86,8 @@ public class ProductoRepository {
 	}
 
 	public List<Producto> buscarProductosRecomendadosXIdProducto(int idProducto) {
-		String sql = "SELECT  pr.idProducto,pr.codigoProducto, pr.descripcion,"
-				+ "pr.precioUnitario,pr.imagen,pr.porctMinVenta,pr.fechaVencimiento "
+		String sql = "SELECT  pr.idProducto,pr.codigoProducto, pr.descripcion, pr.marca,"
+				+ "pr.precioUnitario,pr.imagen,pr.fechaVencimiento "
 				+ " FROM productopalabraclave pcc join producto pr on pcc.idProducto=pr.idProducto "
 				+ " where pcc.palabraClave = ( SELECT pc.palabraClave FROM productopalabraclave pc "
 				+ " join producto p on p.idProducto=pc.idProducto where p.idProducto=?) and pr.idProducto != ? ";
@@ -98,7 +100,7 @@ public class ProductoRepository {
 				producto.setDescripcion(rs.getString("pr.descripcion"));
 				producto.setPrecioUnitario(rs.getDouble("pr.precioUnitario"));
 				producto.setFechaVencimiento(rs.getDate("pr.fechaVencimiento"));
-
+				producto.setMarca(rs.getString("pr.marca"));
 				byte[] bytes = rs.getBytes("pr.imagen");
 				byte[] encodeBase64 = Base64.encodeBase64(bytes);
 				String base64Encoded;

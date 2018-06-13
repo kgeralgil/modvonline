@@ -24,5 +24,10 @@
 	<definition name="descuento-principal" extends="mainLayout">
 		<put-attribute name="body" value="/views/cus04_descDiario/index.jsp" />
 	</definition>
+	
+	<!-- Reporte Analitico -->
+	<definition name="analisis-principal" extends="mainLayout">
+		<put-attribute name="body" value="/views/reporteAnalitico.jsp" />
+	</definition>
 
 </tiles-definitions>
