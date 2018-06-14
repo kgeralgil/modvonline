@@ -82,8 +82,10 @@ public class AnalisisRepository {
 	
 	public void eliminarDescuentoDiario(int idProducto) {
 
-		jdbcTemplate.update("DELETE from productodescuento where tipoDescuento = 'D' and idProducto = ? ",
-				idProducto);
+		//jdbcTemplate.update("DELETE from productodescuento where tipoDescuento = 'D' and idProducto = ? ",idProducto);
+		//Actualizar el estado a Inactivo
+		jdbcTemplate.update(
+				"UPDATE productodescuento SET estado =0 where tipoDescuento = 'D' and idProducto = ? ",idProducto);
 		
 	}
 

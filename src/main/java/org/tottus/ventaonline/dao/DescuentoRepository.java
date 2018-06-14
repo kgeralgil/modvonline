@@ -29,10 +29,9 @@ public class DescuentoRepository {
 
 	public Integer validarDescuentoDNI(String dni) {
 		String sql = 
-				"select count(1) as descuentosGenerados from productodescuentodiariocliente pddc "
-				+ "inner join descuentodiariocliente ddc on "
-				+ "pddc.idDescuentoDiarioCliente = ddc.idDescuentoDiarioCliente " 
-				+ "where ddc.dni = ? and date(ddc.fecha) = date(now())";
+				"select count(1) as descuentosGenerados from productodescuentogenerado pdg "
+						+ "inner join descuentogenerado dg on pdg.idDescuentoGenerado = dg.idDescuentoGenerado "
+						+ "where dg.dni = ? and date(dg.fecha) = date(now())";
 		return jdbcTemplate.queryForObject(sql, new Object[] { dni }, Integer.class);
 	}
 	

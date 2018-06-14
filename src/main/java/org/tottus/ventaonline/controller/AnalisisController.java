@@ -59,8 +59,7 @@ public class AnalisisController {
 
 		System.out.println(fechaIni + "-" + fechaFin);
 
-		productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni,
-				fechaFin);
+		productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
 		request.setAttribute("productosParaDescuento", productos);
 		System.out.println("Productos para descuento " + productos.size());
 		if (productos.size() == 0) {
@@ -68,13 +67,12 @@ public class AnalisisController {
 		} else {
 			request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
 		}
-		
-		
+
 		productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
 		request.setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
 
-		System.out.println("Producto en descuento "+ productosEnDescuentoDiario.size());
-		
+		System.out.println("Producto en descuento " + productosEnDescuentoDiario.size());
+
 		if (productosEnDescuentoDiario.size() == 0) {
 			request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
 		} else {
@@ -90,50 +88,52 @@ public class AnalisisController {
 			@RequestParam(name = "cantidadDisponible") int cantidadDisponible,
 			@RequestParam(name = "diasVigencia") int diasvigencia, HttpServletRequest request) {
 		System.out.println("Productos para descuento * " + productos.size());
-		System.out.println("Producto en descuento * "+ productosEnDescuentoDiario.size());
-		
+		System.out.println("Producto en descuento * " + productosEnDescuentoDiario.size());
+
 		ProductoDescuento productoDescuento = new ProductoDescuento();
 		productoDescuento.setIdProducto(idProducto);
 		productoDescuento.setPctDescuento(porcentajeDescuento);
 		productoDescuento.setCantDisponible(cantidadDisponible);
 		productoDescuento.setDiasVigencia(diasvigencia);
-		
-		//Contemplar: Si el stock a agregar mayor al stock actual del producto
-			
+
+		// Contemplar: Si el stock a agregar mayor al stock actual del producto
+
 		for (int i = 0; i < productos.size(); i++) {
-			if(productos.get(i).getIdProducto()==productoDescuento.getIdProducto()){
-				if(productos.get(0).getStockActual()<productoDescuento.getCantDisponible()){
+			if (productos.get(i).getIdProducto() == productoDescuento.getIdProducto()) {
+				if (productos.get(0).getStockActual() < productoDescuento.getCantDisponible()) {
 					Map<String, Object> resultado = new HashMap<>();
 					resultado.put("mensaje", Constantes.ERR_STOCK_INSUFICIENTE);
 					redir.addFlashAttribute("msg", resultado.get("mensaje"));
-					
+
 				}
 				break;
 			}
 		}
-		
-		
-		// RN019: Sólo se puede ingresar un máximo de 10 productos a descuentos, diarios por ventas bajas.
+
+		// RN019: Sólo se puede ingresar un máximo de 10 productos a descuentos,
+		// diarios por ventas bajas.
 		if (productosEnDescuentoDiario.size() == 10) {
 			Map<String, Object> resultado = new HashMap<>();
 			resultado.put("mensaje", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
 			redir.addFlashAttribute("msg", resultado.get("mensaje"));
-		}
-		else{
+		} else {
 			analisisService.agregarDescuentoDiario(productoDescuento);
-			System.out.println("Cantidad de productos diarios registrados "+ productosEnDescuentoDiario.size());
+			System.out.println("Cantidad de productos diarios registrados " + productosEnDescuentoDiario.size());
 		}
 
 		return "analisis-principal";
 	}
-	
-	@RequestMapping(value = "/eliminar-descuento", method = RequestMethod.GET)
-	public String eliminarDescuento(RedirectAttributes redir, @RequestParam(name = "idProducto") int idProducto) {
 
-		
+	@RequestMapping(value = "/eliminar-descuento", method = RequestMethod.GET)
+	public String eliminarDescuento(RedirectAttributes redir, @RequestParam(name = "idProducto") int idProducto,
+			HttpServletRequest request) {
+
 		System.out.println("Descuento Eliminado");
 		analisisService.eliminarDescuentoDiario(idProducto);
-		
+
+		// Volver a listar los productos con descuento
+		productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
+		request.setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
 		return "analisis-principal";
 	}
 
