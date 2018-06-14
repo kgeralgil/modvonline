@@ -46,6 +46,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <Button
+                android:id="@+id/btn_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/green_olive"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="AGREGAR A CARRITO"
+                android:textColor="@android:color/white"
+                android:drawableLeft="@drawable/cart"
+                android:drawablePadding="10dp"
+                android:layout_marginTop="35dp"
+                android:visibility="gone"/>
+
 
         </LinearLayout>
 

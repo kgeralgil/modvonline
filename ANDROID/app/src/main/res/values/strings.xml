@@ -2,6 +2,6 @@
     <string name="app_name">Tottus</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Inicio</string>
-    <string name="title_dashboard">Buscar</string>
-    <string name="title_notifications">Carrito</string>
+    <string name="title_dashboard">Buscar QR</string>
+    <string name="title_notifications">Buscar Voz</string>
 </resources>

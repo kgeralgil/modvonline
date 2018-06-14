@@ -1,6 +1,5 @@
 package pe.edu.upc.tottus.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,14 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.CommonStatusCodes;
-
 import pe.edu.upc.tottus.R;
 import pe.edu.upc.tottus.fragments.HomeFragment;
-import pe.edu.upc.tottus.fragments.NotificationFragment;
-import pe.edu.upc.tottus.fragments.SearchFragment;
-
-import static pe.edu.upc.tottus.fragments.SearchFragment.REQUEST_CODE;
+import pe.edu.upc.tottus.fragments.SearchVoiceFragment;
+import pe.edu.upc.tottus.fragments.SearchQRFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
     private Fragment getFragmentFor(int id){
         switch (id) {
             case R.id.navigation_home:
-                toolbarTitle.setText("Home");
+                toolbarTitle.setText("Inicio");
                 return new HomeFragment();
             case R.id.navigation_search:
-                toolbarTitle.setText("Búsqueda");
-                return new SearchFragment();
+                toolbarTitle.setText("Búsqueda por QR");
+                return new SearchQRFragment();
             case R.id.navigation_notifications:
-                toolbarTitle.setText("Notificaciones");
-                return new NotificationFragment();
+                toolbarTitle.setText("Búsqueda por Voz");
+                return new SearchVoiceFragment();
         }
         return null;
     }

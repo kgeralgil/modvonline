@@ -2,93 +2,94 @@ package pe.edu.upc.tottus.fragments;
 
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.android.gms.common.api.CommonStatusCodes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Locale;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import pe.edu.upc.tottus.R;
+import pe.edu.upc.tottus.activities.ScanActivity;
+import pe.edu.upc.tottus.models.Product;
 import pe.edu.upc.tottus.network.ApiService;
 import pe.edu.upc.tottus.utils.DeviceUtil;
-
-import static android.app.Activity.RESULT_OK;
-
+import pe.edu.upc.tottus.utils.ImageUtil;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotificationFragment extends Fragment {
+public class SearchQRFragment extends Fragment implements View.OnClickListener {
 
+    public static final int REQUEST_CODE = 100;
 
-    public NotificationFragment() {
-        // Required empty public constructor
-    }
-
+    FloatingActionButton fab;
+    TextView productQuantity;
+    TextView productPrice;
+    TextView productDiscount;
+    TextView productValidDate;
+    TextView productName;
+    ImageView productImage;
+    Button btnCart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notification, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        Button speech = (Button) view.findViewById(R.id.speech);
-        speech.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-                intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                        "Habla");
+        fab = (FloatingActionButton) view.findViewById(R.id.fabScan);
+        productName = (TextView) view.findViewById(R.id.product_name);
+        productQuantity = (TextView) view.findViewById(R.id.product_quantity);
+        productPrice = (TextView) view.findViewById(R.id.product_price);
+        productDiscount = (TextView) view.findViewById(R.id.product_discount);
+        productValidDate = (TextView) view.findViewById(R.id.product_valid_date);
+        productImage = (ImageView) view.findViewById(R.id.product_image);
+        btnCart = (Button) view.findViewById(R.id.btn_cart);
+        fab.setOnClickListener(this);
 
-                try {
-                    startActivityForResult(intent, 1);
-                } catch (ActivityNotFoundException a) {
-                    Toast.makeText(getContext(), "Opps! Your device doesn’t support Speech to Text", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+      startActivityForResult(new Intent(getContext(), ScanActivity.class), REQUEST_CODE);
+        //getProduct("DESC001");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case 1: {
-                if (resultCode == RESULT_OK && null != data) {
-
-                    ArrayList<String> result = data
-                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    Toast.makeText(getContext(), result.get(0), Toast.LENGTH_SHORT).show();
-                }
-                break;
-            }
-
+        if (requestCode == REQUEST_CODE && resultCode == CommonStatusCodes.SUCCESS && data != null) {
+            String value = data.getStringExtra("BARCODE_VALUE");
+            getProduct(value);
         }
     }
 
-    private void showAlert(String message) {
+    private void showAlert(String message){
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
@@ -106,15 +107,17 @@ public class NotificationFragment extends Fragment {
                 .show();
     }
 
-    private void getProduct(ArrayList<String> result) {
+    private void getProduct(String code) {
+        String deviceId = DeviceUtil.getAndroidId(getContext());
+
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("textPhrase", result);
+            jsonObject.put("idmovil", deviceId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        AndroidNetworking.post(ApiService.VOICE_URL)
+        AndroidNetworking.post(ApiService.DISCOUNT_URL + code)
                 .addJSONObjectBody(jsonObject)
                 .addHeaders("Content-Type", "application/json")
                 .setTag(getString(R.string.app_name))
@@ -123,33 +126,30 @@ public class NotificationFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if (1 != Integer.parseInt(response.getString("code"))) {
+                            /*if (1 != Integer.parseInt(response.getString("code"))) {
+                                btnCart.setVisibility(View.GONE);
                                 showAlert(response.getString("message"));
                                 return;
-                            }
+                            }*/
 
-                            if (response.isNull("data")) {
+                            if (response.isNull("data")){
+                                btnCart.setVisibility(View.GONE);
                                 showAlert("No se encontraron datos");
                                 return;
                             }
 
-                            /*Product product = Product.from(response.getJSONObject("data"));
+                            Product product = Product.from(response.getJSONObject("data"));
 
                             if (product != null){
+                                btnCart.setVisibility(View.VISIBLE);
+
                                 productName.setText(product.getDescription() + " - " + product.getName());
                                 productQuantity.setText("Cantidad máxima: " + product.getQuantityRestriction());
                                 productPrice.setText("Precio normal: " + product.getPrice() + " (-" + product.getDiscount()+"%)");
                                 productDiscount.setText("Ahora: " + product.getUnitPriceDis());
-
-                                Calendar cal = Calendar.getInstance();
-                                cal.setTimeInMillis(Long.parseLong(product.getDueDate()));
-                                SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
-
-                                productValidDate.setText("Promoción válida hasta: " + format1.format(cal.getTime()));
-
-                                Bitmap bm = ImageUtil.decodeBase64(product.getImage());
-                                productImage.setImageBitmap(bm);
-                            }*/
+                                productValidDate.setText("Promoción válida hasta: " + product.getDueDate());
+                                productImage.setImageBitmap(product.getImage());
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -162,5 +162,4 @@ public class NotificationFragment extends Fragment {
                     }
                 });
     }
-
 }
