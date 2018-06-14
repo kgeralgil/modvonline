@@ -13,8 +13,8 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#"> 
-					<span data-feather="file"></span> Apertura / Cierre Caja
+				<a class="nav-link" href="<c:out value='/analisis/' />">
+					<span data-feather="file"></span> Estadístico de Ventas
 				</a>
 			</li>
 			<li class="nav-item">

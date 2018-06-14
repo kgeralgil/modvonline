@@ -11,5 +11,7 @@ public class Constantes {
 	public static final String ERR_CAMPO_NULO = "No se ha ingresado ningún valor.";
 	public static final String ERR_DNI_YA_GENERO_DESCUENTOS = "Usted ya generó sus descuentos del día, inténtelo nuevamente mañana.";
 	public static final String ERR_DNI_NO_REGISTRADO = "El DNI ingresado no se encuentra registrado. Por favor regístrese e inténtelo nuevamente.";
-	
+	public static final String ERR_MAX10_PRODUCTOSDIARIOS = "Se tienen 10 productos configurados como máximo en descuento diario";
+	public static final String ERR_PRODUCTO_DESCUENTOTRADICIONAL = "El producto elegido ya cuenta con un descuento activo";
+	public static final String MSG_P = "No hay productos con niveles de venta inferiores al esperado";
 }
