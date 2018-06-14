@@ -24,6 +24,7 @@ public class ProductoDescuento {
 	private int cantDisponibleAdic;
 	private int unidadesProdDescuento;
 	private int diasVigencia;
+	private int diasEnDescuento;
 	
 	public ProductoDescuento() {
 		
@@ -160,6 +161,15 @@ public class ProductoDescuento {
 
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
+	}
+
+	public int getDiasEnDescuento() {
+		
+		return diasEnDescuento;
+	}
+	
+	public void setDiasEnDescuento(int diasEnDescuento) {
+		this.diasEnDescuento = diasEnDescuento;
 	}
 
 }

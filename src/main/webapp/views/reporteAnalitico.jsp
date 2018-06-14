@@ -5,25 +5,36 @@
 	<div
 		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
-		<div class="input-group mb-3">
+		<div class="input-group mb-3" style="margin: 15px;">
 
-			<label for="fechaIni">Fecha Inicial:</label> <input name="fechaIni"
+			<label for="fechaIni">Fecha Inicial :</label> <input name="fechaIni"
 				type="date" class="form-control" pattern="dd/MM/yyyy"
-				placeholder="dd/mm/yyyy" /> <label for="fechaFin">Fecha
-				Final:</label> <input name="fechaFin" type="date" class="form-control"
-				pattern="dd/MM/yyyy" placeholder="dd/mm/yyyy" /> <input
-				class="btn btn-outline-secondary" type="submit" value="Ver Reporte" />
+				placeholder="dd/mm/yyyy" />
+
+		</div>
+
+		<div class="input-group mb-3" style="margin: 15px;">
+
+			<label for="fechaFin">Fecha Final :</label> <input name="fechaFin"
+				type="date" class="form-control" pattern="dd/MM/yyyy"
+				placeholder="dd/mm/yyyy" />
+		</div>
+		<div class="input-group mb-3" style="margin: 15px;">
+			<input class="btn btn-outline-secondary" type="submit"
+				value="Ver Reporte" />
 		</div>
 	</div>
 </form>
 
 <div class="container">
 	<c:if test="${CproductosParaDescuento=='MODO_VACIO'}">
-		<h1>No hay productos con niveles de venta inferiores al esperado</h1>
+		<h6>No hay productos con niveles de venta inferiores al esperado</h6>
 	</c:if>
 	<c:if test="${CproductosParaDescuento=='MODO_CONSULTA'}">
 		<div class="row">
-			<table class="table table-bordered">
+			Productos con Nivel Bajo en Venta
+			<table class="table table-bordered"
+				title="Productos con Nivel Bajo en Venta">
 				<tr class="table-success">
 					<th class="table-hover">Producto</th>
 					<th>Porcentaje de Venta</th>
@@ -63,7 +74,7 @@
 														name="idProducto" readonly="readonly">
 												</div>
 												<div class="form-group">
-													<label for="porcentajeDescuento">Descuento Aplicado</label> 
+													<label for="porcentajeDescuento">Descuento Aplicado</label>
 													<input type="number" class="form-control"
 														id="porcentajeDescuento" name="porcentajeDescuento"
 														placeholder="Descuento Aplicado">
@@ -83,6 +94,7 @@
 												</div>
 
 												<div class="modal-footer">
+													<button type="reset" class="btn btn-primary">Cancelar</button>
 													<button type="submit" class="btn btn-primary">Agregar</button>
 												</div>
 
@@ -109,11 +121,13 @@
 	<c:if test="${cproductosEnDescuento=='MODO_LISTA'}">
 
 		<div class="row">
-			<table class="table table-bordered">
+			Descuentos Diarios
+			<table class="table table-bordered" title="Descuentos Diarios">
 				<tr class="table-success">
 					<th class="table-hover">Producto</th>
 					<th>Porcentaje Descuento</th>
-					<th>Cantidad</th>
+					<th>Dias Vigencia</th>
+					<th>Dias en Descuento</th>
 					<th>Seleccione</th>
 				</tr>
 				<c:forEach var="producto" items="${productosDescuentoDiario}">
@@ -121,6 +135,7 @@
 						<td>${producto.idProducto}</td>
 						<td>${producto.pctDescuento}</td>
 						<td>${producto.diasVigencia}</td>
+						<td>${producto.diasEnDescuento}</td>
 						<td>
 							<button type="button" data-toggle="modal"
 								data-id="${producto.idProducto}"
@@ -144,16 +159,16 @@
 											<form method="get"
 												action="<c:url value='/analisis/eliminar-descuento'/>">
 												<div class="form-group">
-													<input
-														type="text" class="form-control" id="idProductoEliminar"
-														name="idProducto" readonly="readonly"
-														style="visibility: hidden;">
+													<input type="text" class="form-control"
+														id="idProductoEliminar" name="idProducto"
+														readonly="readonly" style="visibility: hidden;">
 
 													<p>¿Está seguro de retirar el producto seleccionado de
 														la lista de descuentos diarios?</p>
 												</div>
 
 												<div class="modal-footer">
+													<button type="reset" class="btn btn-primary">Cancelar</button>
 													<button type="submit" class="btn btn-primary">Eliminar</button>
 												</div>
 

@@ -48,6 +48,8 @@
 			if (msg != null && msg != "") {
 				toastr.info(msg)
 			}
+				
+				console.log("Mensaje:" + msg);
 
 		});
 	</script>

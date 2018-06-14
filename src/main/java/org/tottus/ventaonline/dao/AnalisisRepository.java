@@ -27,7 +27,7 @@ public class AnalisisRepository {
 	// Consultar Productos en Descuento Diario actual
 	public List<ProductoDescuento> ConsultarProductosEnDescuento(int estado) {
 
-		String sql = "select idProducto,cantDisponible,tipoDescuento,pctDescuento,diasVigencia"
+		String sql = "select idProducto,cantDisponible,tipoDescuento,pctDescuento,diasVigencia,fechaCreacion "
 				+ " from productodescuento where estado like ?";
 
 		RowMapper<ProductoDescuento> mapper = new RowMapper<ProductoDescuento>() {
@@ -36,6 +36,9 @@ public class AnalisisRepository {
 				prDescuento.setIdProducto(rs.getInt("idProducto"));
 				prDescuento.setPctDescuento(rs.getDouble("pctDescuento"));
 				prDescuento.setDiasVigencia(rs.getInt("diasVigencia"));
+				prDescuento.setFechaCreacion(rs.getDate("fechaCreacion"));
+				Date hoy= new Date();
+				prDescuento.setDiasEnDescuento((int) ((hoy.getTime()-prDescuento.getFechaCreacion().getTime())/86400000));
 				return prDescuento;
 			}
 		};
@@ -62,7 +65,6 @@ public class AnalisisRepository {
 				prDescuento.setDescripcionProducto(rs.getString("descripcionProducto"));
 				prDescuento.setPorcentajeVenta(rs.getDouble("porcentajeVenta"));
 				prDescuento.setStockActual(rs.getInt("stockActual"));
-
 				return prDescuento;
 			}
 		};

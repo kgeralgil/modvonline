@@ -1,9 +1,7 @@
 package org.tottus.ventaonline.controller;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -60,9 +58,10 @@ public class AnalisisController {
 		System.out.println(fechaIni + "-" + fechaFin);
 
 		productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
+		
 		request.getSession().setAttribute("productosParaDescuento", productos);
 		System.out.println("Productos para descuento " + productos.size());
-		if (productos.size() == 0) {
+		if (productos.size() <=1  && productos.get(0).getStockActual()==0) {
 			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
 		} else {
 			request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
@@ -90,6 +89,7 @@ public class AnalisisController {
 			@RequestParam(name = "diasVigencia") int diasvigencia, HttpServletRequest request) {
 		System.out.println("Productos para descuento * " + productos.size());
 		System.out.println("Producto en descuento * " + productosEnDescuentoDiario.size());
+		boolean errorStock = false;
 
 		ProductoDescuento productoDescuento = new ProductoDescuento();
 		productoDescuento.setIdProducto(idProducto);
@@ -97,36 +97,40 @@ public class AnalisisController {
 		productoDescuento.setCantDisponible(cantidadDisponible);
 		productoDescuento.setDiasVigencia(diasvigencia);
 
-		// Contemplar: Si el stock a agregar mayor al stock actual del producto
-
+		// Contemplar: Si el stock a agregar es mayor al stock actual del
+		// producto
 		for (int i = 0; i < productos.size(); i++) {
 			if (productos.get(i).getIdProducto() == productoDescuento.getIdProducto()) {
 				if (productos.get(0).getStockActual() < productoDescuento.getCantDisponible()) {
-					Map<String, Object> resultado = new HashMap<>();
-					resultado.put("mensaje", Constantes.ERR_STOCK_INSUFICIENTE);
-					redir.addFlashAttribute("msg", resultado.get("mensaje"));
+					errorStock = true;
+					request.setAttribute("msg", Constantes.ERR_STOCK_INSUFICIENTE);
+					System.out.println("stock insuficiente  ****************");
 
 				}
 				break;
 			}
 		}
 
-		// RN019: Sólo se puede ingresar un máximo de 10 productos a descuentos,
-		// diarios por ventas bajas.
-		if (productosEnDescuentoDiario.size() == 10) {
-			Map<String, Object> resultado = new HashMap<>();
-			resultado.put("mensaje", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
-			redir.addFlashAttribute("msg", resultado.get("mensaje"));
-		} else {
-			analisisService.agregarDescuentoDiario(productoDescuento);
+		if (errorStock == false) {
 
-			productosEnDescuentoDiario.add(productoDescuento);
+			// RN019: Sólo se puede ingresar un máximo de 10 productos a
+			// descuentos,
+			// diarios por ventas bajas.
+			if (productosEnDescuentoDiario.size() == 10) {
+				request.setAttribute("msg", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
+				System.out.println("Prodcutos con descuento Diario son 10 ****************");
 
-			request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+			} else {
+				analisisService.agregarDescuentoDiario(productoDescuento);
 
-			System.out.println("Cantidad de productos diarios registrados " + productosEnDescuentoDiario.size());
+				productosEnDescuentoDiario.add(productoDescuento);
+
+				request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+
+				System.out.println("Cantidad de productos diarios registrados " + productosEnDescuentoDiario.size());
+			}
 		}
-
+		
 		if (productos.size() == 0) {
 			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
 		} else {
@@ -156,6 +160,7 @@ public class AnalisisController {
 		}
 
 		request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+		request.setAttribute("msg", Constantes.MSG_PRODUCTO_ELIMINADO_DESCUENTODIARIO);
 
 		if (productos.size() == 0) {
 			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
