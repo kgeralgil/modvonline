@@ -22,7 +22,8 @@
 				<div class="col-4 col-md">
 					<div class="card mb-4 box-shadow">
 						<div class="card-header">
-							<img src="data:image/jpeg;base64,${descuento.imagen}" class="img-thumbnail" />
+							<img src="data:image/jpeg;base64,${descuento.imagen}" 
+								class="img-thumbnail" height="139" width="139" />
 							<h4 class="my-0 font-weight-normal">${descuento.descripcion}</h4>
 						</div>
 						<div class="card-body">

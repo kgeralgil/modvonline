@@ -1,5 +1,7 @@
 package org.tottus.ventaonline.dao;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +9,7 @@ import java.sql.SQLException;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.jdbc.core.RowMapper;
 import org.tottus.ventaonline.model.Descuento;
+import org.tottus.ventaonline.utils.Util;
 
 public class DescuentoRowMapper implements RowMapper<Descuento> {
 
@@ -21,13 +24,19 @@ public class DescuentoRowMapper implements RowMapper<Descuento> {
 		descuento.setPrecioUnitario(rs.getDouble("precioUnitario"));
 		descuento.setPorcentajeDescuento(rs.getDouble("pctDescuento"));
 		descuento.setRestriccionCantidad(rs.getInt("unidadesProdDescuento"));
-		byte[] bytes = rs.getBytes("imagen");
-		byte[] encodeBase64 = Base64.encodeBase64(bytes);
-		String base64Encoded;
 		try {
-			base64Encoded = new String(encodeBase64, "UTF-8");
+			byte[] bytes = null;
+			if(null==rs.getBytes("imagen")){
+				File imgPath = new File(getClass().getClassLoader()
+						.getResource("default.jpg").getFile());
+				bytes = Util.extractBytesFromFile(imgPath);
+			} else {
+				bytes = rs.getBytes("imagen");
+			}
+			byte[] encodeBase64 = Base64.encodeBase64(bytes);
+			String base64Encoded = new String(encodeBase64, "UTF-8");
 			descuento.setImagen(base64Encoded);
-		} catch (UnsupportedEncodingException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		descuento.calcularFechaCaducidad();

@@ -31,7 +31,7 @@
 							<div class="card mb-4 box-shadow">
 								<div class="card-header">
 									<img src="data:image/jpeg;base64,${producto.imagen}"
-										class="img-thumbnail" />
+										class="img-thumbnail" height="139" width="139" />
 									<h4 class="my-0 font-weight-normal">
 										${producto.descripcion}</h4>
 								</div>
@@ -60,7 +60,7 @@
 				<div class="card mb-4 box-shadow">
 					<div class="card-header">
 						<img src="data:image/jpeg;base64,${productoAgregado.imagen}"
-							class="img-thumbnail" />
+							class="img-thumbnail" height="139" width="139" />
 						<h4 class="my-0 font-weight-normal">${productoAgregado.descripcion}</h4>
 					</div>
 					<div class="card-body">
@@ -85,7 +85,7 @@
 								<div class="card mb-4 box-shadow">
 									<div class="card-header">
 										<img src="data:image/jpeg;base64,${producto.imagen}"
-											class="img-thumbnail" />
+											class="img-thumbnail" height="139" width="139" />
 										<h4 class="my-0 font-weight-normal">${producto.descripcion}</h4>
 									</div>
 									<div class="card-body">
