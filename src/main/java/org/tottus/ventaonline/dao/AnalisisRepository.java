@@ -72,11 +72,20 @@ public class AnalisisRepository {
 	}
 
 	public void agregarDescuentoDiario(ProductoDescuento productoDescuento) {
-
+		Date date = new Date();
 		jdbcTemplate.update(
-				"INSERT INTO productodescuento (idProducto, cantDisponible,pctDescuento,diasVigencia,tipoDescuento,estado) VALUES (?, ?, ?, ?, ?, ?)",
+				"INSERT INTO productodescuento (idProducto, cantDisponible,pctDescuento,diasVigencia,tipoDescuento,estado,fechacreacion) VALUES (?, ?, ?, ?, ?, ?,?)",
 				productoDescuento.getIdProducto(), productoDescuento.getCantDisponible(),
-				productoDescuento.getPctDescuento(), productoDescuento.getDiasVigencia(),"D",1);
+				productoDescuento.getPctDescuento(), productoDescuento.getDiasVigencia(),"D",1,date);
+		
+	}
+	
+	public void eliminarDescuentoDiario(int idProducto) {
+
+		//jdbcTemplate.update("DELETE from productodescuento where tipoDescuento = 'D' and idProducto = ? ",idProducto);
+		//Actualizar el estado a Inactivo
+		jdbcTemplate.update(
+				"UPDATE productodescuento SET estado =0 where tipoDescuento = 'D' and idProducto = ? ",idProducto);
 		
 	}
 

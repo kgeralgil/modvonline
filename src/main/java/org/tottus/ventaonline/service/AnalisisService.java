@@ -31,5 +31,8 @@ public class AnalisisService {
 		analisisRepository.agregarDescuentoDiario(productoDescuento);
 		
 	}
+	public void eliminarDescuentoDiario(int idProducto) {
+		analisisRepository.eliminarDescuentoDiario(idProducto);
+	}
 
 }

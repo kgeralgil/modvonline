@@ -55,7 +55,7 @@
 											</button>
 										</div>
 										<div class="modal-body">
-											<form method="post"
+											<form method="get"
 												action="<c:url value='/analisis/agregar-descuento'/>">
 												<div class="form-group">
 													<label for="idProducto">Id Producto</label> <input
@@ -71,7 +71,7 @@
 												<div class="form-group">
 													<label for="cantidadDisponible">Stock</label> <input
 														type="number" class="form-control" id="cantidadDisponible"
-														name="cantidadDisponible" placeholder="Stock"
+														name="cantidadDisponible" placeholder="Stock" min="1"
 														required="required">
 												</div>
 
