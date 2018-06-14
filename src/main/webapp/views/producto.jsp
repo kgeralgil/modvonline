@@ -1,13 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
+<h5>Busqueda de Productos</h5>
 <form method="get" action="<c:url value='/productos/consultar' />">
-	<label>Nombre de Producto</label>
+
 	<div
 		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
 		<div class="input-group mb-3">
-			<input name="textoBusqueda" type="text" class="form-control"
+			<label>Nombre de Producto :</label> <input name="textoBusqueda"
+				type="text" class="form-control"
 				placeholder="Escribe aqui el producto a consultar" />
 			<div class="input-group-append">
 				<input class="btn btn-outline-secondary" type="submit"
@@ -31,9 +33,12 @@
 							<div class="card mb-4 box-shadow">
 								<div class="card-header">
 									<img src="data:image/jpeg;base64,${producto.imagen}"
-										class="img-thumbnail" height="139" width="139" />
-									<h4 class="my-0 font-weight-normal">
-										${producto.descripcion}</h4>
+										class="img-thumbnail" />
+
+									<div style="max-width: 139px;">
+										<h4 class="my-0 font-weight-normal">
+											${producto.descripcion}</h4>
+									</div>
 								</div>
 								<div class="card-body">
 									<h1 class="card-title pricing-card-title">
@@ -45,7 +50,7 @@
 								</div>
 
 								<c:url value="/productos/agregar" var="agregarURL">
-								  <c:param name="idProducto" value="${producto.idProducto}" />
+									<c:param name="idProducto" value="${producto.idProducto}" />
 								</c:url>
 								<a class="btn btn-lg btn-block btn-outline-primary"
 									href="<c:out value='${agregarURL}' />">Agregar</a>

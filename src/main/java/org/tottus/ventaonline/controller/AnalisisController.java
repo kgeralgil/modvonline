@@ -57,28 +57,31 @@ public class AnalisisController {
 
 		System.out.println(fechaIni + "-" + fechaFin);
 
-		productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
-		
-		request.getSession().setAttribute("productosParaDescuento", productos);
-		System.out.println("Productos para descuento " + productos.size());
-		if (productos.size() <=1  && productos.get(0).getStockActual()==0) {
-			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
+		if (fechaFin.before(fechaIni)) {
+			request.setAttribute("msg", Constantes.ERR_FECHA_INCORRECTAS);
 		} else {
-			request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
+			productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
+
+			request.getSession().setAttribute("productosParaDescuento", productos);
+			System.out.println("Productos para descuento " + productos.size());
+			if (productos.size() <= 1 && productos.get(0).getStockActual() == 0) {
+				request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
+			} else {
+				request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
+			}
+
+			productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
+
+			request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+
+			System.out.println("Producto en descuento " + productosEnDescuentoDiario.size());
+
+			if (productosEnDescuentoDiario.size() == 0) {
+				request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
+			} else {
+				request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
+			}
 		}
-
-		productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
-
-		request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
-
-		System.out.println("Producto en descuento " + productosEnDescuentoDiario.size());
-
-		if (productosEnDescuentoDiario.size() == 0) {
-			request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
-		} else {
-			request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
-		}
-
 		return "analisis-principal";
 	}
 
@@ -87,50 +90,62 @@ public class AnalisisController {
 			@RequestParam(name = "porcentajeDescuento") double porcentajeDescuento,
 			@RequestParam(name = "cantidadDisponible") int cantidadDisponible,
 			@RequestParam(name = "diasVigencia") int diasvigencia, HttpServletRequest request) {
-		System.out.println("Productos para descuento * " + productos.size());
-		System.out.println("Producto en descuento * " + productosEnDescuentoDiario.size());
-		boolean errorStock = false;
 
-		ProductoDescuento productoDescuento = new ProductoDescuento();
-		productoDescuento.setIdProducto(idProducto);
-		productoDescuento.setPctDescuento(porcentajeDescuento);
-		productoDescuento.setCantDisponible(cantidadDisponible);
-		productoDescuento.setDiasVigencia(diasvigencia);
+		if (analisisService.consultarProductosParaDescuentoDiario(idProducto) == 0) {
 
-		// Contemplar: Si el stock a agregar es mayor al stock actual del
-		// producto
-		for (int i = 0; i < productos.size(); i++) {
-			if (productos.get(i).getIdProducto() == productoDescuento.getIdProducto()) {
-				if (productos.get(0).getStockActual() < productoDescuento.getCantDisponible()) {
-					errorStock = true;
-					request.setAttribute("msg", Constantes.ERR_STOCK_INSUFICIENTE);
-					System.out.println("stock insuficiente  ****************");
+			System.out.println("Productos para descuento * " + productos.size());
+			System.out.println("Producto en descuento * " + productosEnDescuentoDiario.size());
+			boolean errorStock = false;
 
+			ProductoDescuento productoDescuento = new ProductoDescuento();
+			productoDescuento.setIdProducto(idProducto);
+			productoDescuento.setPctDescuento(porcentajeDescuento);
+			productoDescuento.setCantDisponible(cantidadDisponible);
+			productoDescuento.setDiasVigencia(diasvigencia);
+
+			// Contemplar: Si el stock a agregar es mayor al stock actual del
+			// producto
+			for (int i = 0; i < productos.size(); i++) {
+				if (productos.get(i).getIdProducto() == productoDescuento.getIdProducto()) {
+					if (productos.get(0).getStockActual() < productoDescuento.getCantDisponible()) {
+						errorStock = true;
+						request.setAttribute("msg", Constantes.ERR_STOCK_INSUFICIENTE);
+						System.out.println("stock insuficiente  ****************");
+
+					}
+					break;
 				}
-				break;
 			}
+
+			if (errorStock == false) {
+
+				// RN019: Sólo se puede ingresar un máximo de 10 productos a
+				// descuentos,
+				// diarios por ventas bajas.
+				if (productosEnDescuentoDiario.size() == 10) {
+					request.setAttribute("msg", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
+					System.out.println("Prodcutos con descuento Diario son 10 ****************");
+
+				} else {
+					analisisService.agregarDescuentoDiario(productoDescuento);
+					request.setAttribute("msg", Constantes.MSG_PRODUCTO_ACTUALIZADO);
+					productosEnDescuentoDiario.add(productoDescuento);
+					
+					//-----------------------------
+					productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
+
+					request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+
+					System.out
+							.println("Cantidad de productos diarios registrados " + productosEnDescuentoDiario.size());
+				}
+			}
+		} else {
+			
+			request.setAttribute("msg", Constantes.ERR_PRODUCTO_TIENE_DESCUENTO);
+
 		}
 
-		if (errorStock == false) {
-
-			// RN019: Sólo se puede ingresar un máximo de 10 productos a
-			// descuentos,
-			// diarios por ventas bajas.
-			if (productosEnDescuentoDiario.size() == 10) {
-				request.setAttribute("msg", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
-				System.out.println("Prodcutos con descuento Diario son 10 ****************");
-
-			} else {
-				analisisService.agregarDescuentoDiario(productoDescuento);
-				request.setAttribute("msg", Constantes.MSG_PRODUCTO_AGREGADO_DESCUENTODIARIO);
-				productosEnDescuentoDiario.add(productoDescuento);
-
-				request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
-
-				System.out.println("Cantidad de productos diarios registrados " + productosEnDescuentoDiario.size());
-			}
-		}
-		
 		if (productos.size() == 0) {
 			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
 		} else {
@@ -160,7 +175,7 @@ public class AnalisisController {
 		}
 
 		request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
-		request.setAttribute("msg", Constantes.MSG_PRODUCTO_ELIMINADO_DESCUENTODIARIO);
+		request.setAttribute("msg", Constantes.MSG_PRODUCTO_ACTUALIZADO);
 
 		if (productos.size() == 0) {
 			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");

@@ -40,12 +40,13 @@ public class AnalisisRepository {
 				prDescuento.setPctDescuento(rs.getDouble("pctDescuento"));
 				prDescuento.setDiasVigencia(rs.getInt("diasVigencia"));
 				prDescuento.setFechaCreacion(rs.getDate("fechaCreacion"));
-				Date hoy= new Date();
-				prDescuento.setDiasEnDescuento((int) ((hoy.getTime()-prDescuento.getFechaCreacion().getTime())/86400000));
+				Date hoy = new Date();
+				prDescuento.setDiasEnDescuento(
+						(int) ((hoy.getTime() - prDescuento.getFechaCreacion().getTime()) / 86400000));
 				return prDescuento;
 			}
 		};
-		
+
 		return jdbcTemplate.query(sql, new Object[] { estado }, mapper);
 
 	}
@@ -81,17 +82,29 @@ public class AnalisisRepository {
 		jdbcTemplate.update(
 				"INSERT INTO productodescuento (idProducto, cantDisponible,pctDescuento,diasVigencia,tipoDescuento,estado,fechacreacion) VALUES (?, ?, ?, ?, ?, ?,?)",
 				productoDescuento.getIdProducto(), productoDescuento.getCantDisponible(),
-				productoDescuento.getPctDescuento(), productoDescuento.getDiasVigencia(),"D",1,date);
-		
+				productoDescuento.getPctDescuento(), productoDescuento.getDiasVigencia(), "D", 1, date);
+
 	}
-	
+
 	public void eliminarDescuentoDiario(int idProducto) {
 
-		//jdbcTemplate.update("DELETE from productodescuento where tipoDescuento = 'D' and idProducto = ? ",idProducto);
-		//Actualizar el estado a Inactivo
-		jdbcTemplate.update(
-				"UPDATE productodescuento SET estado =0 where tipoDescuento = 'D' and idProducto = ? ",idProducto);
-		
+		// jdbcTemplate.update("DELETE from productodescuento where
+		// tipoDescuento = 'D' and idProducto = ? ",idProducto);
+		// Actualizar el estado a Inactivo
+		jdbcTemplate.update("UPDATE productodescuento SET estado =0 where tipoDescuento = 'D' and idProducto = ? ",
+				idProducto);
+
+	}
+
+	// Consultar Productos en Descuento Diario actual
+	public int consultarProductosParaDescuentoDiario(int idProducto) {
+
+		String sql = "SELECT count(*) as 'cantidad' FROM tottus.productodescuento where estado =1 and idProducto = ?";
+
+		int count = jdbcTemplate.queryForObject(sql, new Object[] { idProducto }, Integer.class);
+
+		return count;
+
 	}
 
 }

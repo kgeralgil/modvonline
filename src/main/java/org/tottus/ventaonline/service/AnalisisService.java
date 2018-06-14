@@ -35,4 +35,9 @@ public class AnalisisService {
 		analisisRepository.eliminarDescuentoDiario(idProducto);
 	}
 
+	public int consultarProductosParaDescuentoDiario(int idProducto) {
+		// TODO Auto-generated method stub
+		return analisisRepository.consultarProductosParaDescuentoDiario(idProducto);
+	}
+
 }

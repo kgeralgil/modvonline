@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <form method="post" action="<c:url value='/analisis/consultar' />">
+<h5>Estadística de Ventas Online</h5>
 	<div
 		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
@@ -126,26 +127,27 @@
 			<table class="table table-bordered" title="Descuentos Diarios">
 				<tr class="table-success">
 					<th class="table-hover">Producto</th>
+					<th>Fecha Creación</th>
 					<th>Porcentaje Descuento</th>
-					<th>Fecha Creación Descuento</th>
-					<th>Dias Vigencia</th>
+					<th>Stock Disponible</th>
+					<th>Dias en Vigencia</th>
 					<th>Dias en Descuento</th>
 					<th>Seleccione</th>
 				</tr>
 				<c:forEach var="producto" items="${productosDescuentoDiario}">
 					<tr>
-
 						<td>${producto.descProducto}</td>
+						<td>${producto.fechaCreacion}</td>
 						<td><fmt:formatNumber type="percent" maxFractionDigits="2" pattern="###.##" 
 								value="${producto.pctDescuento}" />%</td>
-						<td>${producto.fechaCreacion}</td>
+						<td>${producto.cantDisponible}</td>
 						<td>${producto.diasVigencia}</td>
 						<td>${producto.diasEnDescuento}</td>
 						<td>
 							<button type="button" data-toggle="modal"
 								data-id="${producto.idProducto}"
 								data-target="#eliminarDescuento"
-								class="eliminar-descuento btn btn-primary">eliminar</button>
+								class="eliminar-descuento btn btn-primary">Retirar</button>
 
 							<div class="modal fade" id="eliminarDescuento" tabindex="-1"
 								role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -167,7 +169,6 @@
 													<input type="text" class="form-control"
 														id="idProductoEliminar" name="idProducto"
 														readonly="readonly" style="visibility: hidden;">
-
 													<p>¿Está seguro de retirar el producto seleccionado de
 														la lista de descuentos diarios?</p>
 												</div>
