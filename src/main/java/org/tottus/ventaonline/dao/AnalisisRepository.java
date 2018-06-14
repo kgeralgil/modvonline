@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.tottus.ventaonline.model.ProductoDescuentoDiario;
+import org.tottus.ventaonline.model.ProductoDescuento;
 import org.tottus.ventaonline.model.ProductosParaDescuentoDiario;
 
 @Repository
@@ -25,17 +25,17 @@ public class AnalisisRepository {
 	}
 
 	// Consultar Productos en Descuento Diario actual
-	public List<ProductoDescuentoDiario> ConsultarProductosEnDescuento(int estado) {
+	public List<ProductoDescuento> ConsultarProductosEnDescuento(int estado) {
 
-		String sql = "select idProducto,cantidadDisponible,tipoDescuento,porcentajeDescuento,restriccionCantidad"
-				+ " from productodescuentodiario where estado like ?";
+		String sql = "select idProducto,cantDisponible,tipoDescuento,pctDescuento,diasVigencia"
+				+ " from productodescuento where estado like ?";
 
-		RowMapper<ProductoDescuentoDiario> mapper = new RowMapper<ProductoDescuentoDiario>() {
-			public ProductoDescuentoDiario mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ProductoDescuentoDiario prDescuento = new ProductoDescuentoDiario();
+		RowMapper<ProductoDescuento> mapper = new RowMapper<ProductoDescuento>() {
+			public ProductoDescuento mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProductoDescuento prDescuento = new ProductoDescuento();
 				prDescuento.setIdProducto(rs.getInt("idProducto"));
-				prDescuento.setPorcentajeDescuento(rs.getDouble("porcentajeDescuento"));
-				prDescuento.setRestriccionCantidad(rs.getInt("restriccionCantidad"));
+				prDescuento.setPctDescuento(rs.getDouble("pctDescuento"));
+				prDescuento.setDiasVigencia(rs.getInt("diasVigencia"));
 				return prDescuento;
 			}
 		};
@@ -48,12 +48,12 @@ public class AnalisisRepository {
 	public List<ProductosParaDescuentoDiario> ConsultarProductosParaDescuentoDiario(Date fechaIni, Date fechaFin) {
 
 		String sql = "SELECT sp.idProducto,pr.descripcion as 'descripcionProducto', sum(vd.cantidad) as VentaRealizada,"
-				+ "( sp.stock * DATEDIFF(now(),sp.fechaIngresoStock))/sp.vigenciaStockSolicitado as 'Venta Esperada',"
+				+ "( sp.stock * DATEDIFF(now(),sp.fechaCreacion))/sp.vigenciaStockSolicitado as 'Venta Esperada',"
 				+ "(sp.stock-sum(vd.cantidad)) as 'stockActual',"
-				+ " sum(vd.cantidad) /(( sp.stock * DATEDIFF(now(),sp.fechaIngresoStock))/sp.vigenciaStockSolicitado) as 'porcentajeVenta' "
+				+ " sum(vd.cantidad) /(( sp.stock * DATEDIFF(now(),sp.fechaCreacion))/sp.vigenciaStockSolicitado) as 'porcentajeVenta' "
 				+ " FROM tottus.stockproducto sp join ventadetalle vd on sp.idProducto=vd.idProducto"
 				+ " join venta v on vd.idVenta=v.idVenta" + " join producto pr on sp.idProducto=pr.idProducto where "
-				+ " sp.fechaIngresoStock between ? and ?";
+				+ " sp.fechaCreacion between ? and ?";
 
 		RowMapper<ProductosParaDescuentoDiario> mapper = new RowMapper<ProductosParaDescuentoDiario>() {
 			public ProductosParaDescuentoDiario mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -71,13 +71,12 @@ public class AnalisisRepository {
 
 	}
 
-	public void agregarDescuentoDiario(ProductoDescuentoDiario productoDescuentoDiario) {
+	public void agregarDescuentoDiario(ProductoDescuento productoDescuento) {
 
 		jdbcTemplate.update(
-				"INSERT INTO productodescuentodiario (idProducto, cantidadDisponible,porcentajeDescuento,restriccionCantidad,fechaIniVigencia,fechaFinVigencia,estado) VALUES (?, ?, ?, ?,?,?,?)",
-				productoDescuentoDiario.getIdProducto(), productoDescuentoDiario.getCantidadDisponible(),
-				productoDescuentoDiario.getPorcentajeDescuento(), productoDescuentoDiario.getRestriccionCantidad(),
-				productoDescuentoDiario.getFechaIniVigencia(),productoDescuentoDiario.getFechaFinVigencia(),1);
+				"INSERT INTO productodescuento (idProducto, cantDisponible,pctDescuento,diasVigencia,tipoDescuento,estado) VALUES (?, ?, ?, ?, ?, ?)",
+				productoDescuento.getIdProducto(), productoDescuento.getCantDisponible(),
+				productoDescuento.getPctDescuento(), productoDescuento.getDiasVigencia(),"D",1);
 		
 	}
 

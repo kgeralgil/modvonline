@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tottus.ventaonline.dao.AnalisisRepository;
-import org.tottus.ventaonline.model.ProductoDescuentoDiario;
+import org.tottus.ventaonline.model.ProductoDescuento;
 import org.tottus.ventaonline.model.ProductosParaDescuentoDiario;
 
 @Service
@@ -18,7 +18,7 @@ public class AnalisisService {
 	@Autowired
 	AnalisisRepository analisisRepository;
 	
-	public List<ProductoDescuentoDiario> ConsultarProductosEnDescuento(int estado) {
+	public List<ProductoDescuento> ConsultarProductosEnDescuento(int estado) {
 		return analisisRepository.ConsultarProductosEnDescuento(estado);
 	}
 	
@@ -26,9 +26,9 @@ public class AnalisisService {
 		return analisisRepository.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
 	}
 
-	public void agregarDescuentoDiario(ProductoDescuentoDiario productoDescuentoDiario) {
+	public void agregarDescuentoDiario(ProductoDescuento productoDescuento) {
 		
-		analisisRepository.agregarDescuentoDiario(productoDescuentoDiario);
+		analisisRepository.agregarDescuentoDiario(productoDescuento);
 		
 	}
 

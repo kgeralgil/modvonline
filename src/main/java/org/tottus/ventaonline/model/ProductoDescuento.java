@@ -13,20 +13,22 @@ public class ProductoDescuento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idProductoDescuento;
+	private String codDescuento;
 	private int idProducto;
-	private Double porcentajeDescuento;
-	private Date fechaVigenciaInicio;
-	private Date fechaVigenciaFin;
+	private String tipoDescuento;
+	private String fuente;
+	private Double pctDescuento;
+	private int cantDisponible;
+	private Double pctDescuentoAdic;
 	private String estado;
-	private int usuarioCreacion;
-	private Date fechaCreacion;
-	private int usuarioModificacion;
-	private Date fechaModificacion;
+	private int cantDisponibleAdic;
+	private int unidadesProdDescuento;
+	private int diasVigencia;
 	
 	public ProductoDescuento() {
 		
 	}
-
+	
 	public int getIdProductoDescuento() {
 		return idProductoDescuento;
 	}
@@ -35,6 +37,75 @@ public class ProductoDescuento {
 		this.idProductoDescuento = idProductoDescuento;
 	}
 
+	public String getCodDescuento() {
+		return codDescuento;
+	}
+
+	public void setCodDescuento(String codDescuento) {
+		this.codDescuento = codDescuento;
+	}
+
+	public String getFuente() {
+		return fuente;
+	}
+
+	public void setFuente(String fuente) {
+		this.fuente = fuente;
+	}
+
+	public Double getPctDescuento() {
+		return pctDescuento;
+	}
+
+	public void setPctDescuento(Double pctDescuento) {
+		this.pctDescuento = pctDescuento;
+	}
+
+	public int getCantDisponible() {
+		return cantDisponible;
+	}
+
+	public void setCantDisponible(int cantDisponible) {
+		this.cantDisponible = cantDisponible;
+	}
+
+	public Double getPctDescuentoAdic() {
+		return pctDescuentoAdic;
+	}
+
+	public void setPctDescuentoAdic(Double pctDescuentoAdic) {
+		this.pctDescuentoAdic = pctDescuentoAdic;
+	}
+
+	public int getCantDisponibleAdic() {
+		return cantDisponibleAdic;
+	}
+
+	public void setCantDisponibleAdic(int cantDisponibleAdic) {
+		this.cantDisponibleAdic = cantDisponibleAdic;
+	}
+
+	public int getUnidadesProdDescuento() {
+		return unidadesProdDescuento;
+	}
+
+	public void setUnidadesProdDescuento(int unidadesProdDescuento) {
+		this.unidadesProdDescuento = unidadesProdDescuento;
+	}
+
+	public int getDiasVigencia() {
+		return diasVigencia;
+	}
+
+	public void setDiasVigencia(int diasVigencia) {
+		this.diasVigencia = diasVigencia;
+	}
+
+	private int usuarioCreacion;
+	private Date fechaCreacion;
+	private int usuarioModificacion;
+	private Date fechaModificacion;
+	
 	public int getIdProducto() {
 		return idProducto;
 	}
@@ -43,28 +114,12 @@ public class ProductoDescuento {
 		this.idProducto = idProducto;
 	}
 
-	public Double getPorcentajeDescuento() {
-		return porcentajeDescuento;
+	public String getTipoDescuento() {
+		return tipoDescuento;
 	}
 
-	public void setPorcentajeDescuento(Double porcentajeDescuento) {
-		this.porcentajeDescuento = porcentajeDescuento;
-	}
-
-	public Date getFechaVigenciaInicio() {
-		return fechaVigenciaInicio;
-	}
-
-	public void setFechaVigenciaInicio(Date fechaVigenciaInicio) {
-		this.fechaVigenciaInicio = fechaVigenciaInicio;
-	}
-
-	public Date getFechaVigenciaFin() {
-		return fechaVigenciaFin;
-	}
-
-	public void setFechaVigenciaFin(Date fechaVigenciaFin) {
-		this.fechaVigenciaFin = fechaVigenciaFin;
+	public void setTipoDescuento(String tipoDescuento) {
+		this.tipoDescuento = tipoDescuento;
 	}
 
 	public String getEstado() {
@@ -106,6 +161,5 @@ public class ProductoDescuento {
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
-	
 
 }

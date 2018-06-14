@@ -55,46 +55,31 @@
 											</button>
 										</div>
 										<div class="modal-body">
-											<form method="get" action="<c:url value='/analisis/agregar-descuento'/>">
+											<form method="post"
+												action="<c:url value='/analisis/agregar-descuento'/>">
 												<div class="form-group">
 													<label for="idProducto">Id Producto</label> <input
-														type="text" class="form-control" id="idProducto"
+														type="text" class="form-control" id="idProductoAgregar"
 														name="idProducto" readonly="readonly">
 												</div>
 												<div class="form-group">
-													<label for="porcentajeDescuento">Descuento Aplicado</label> <input
-														type="number" class="form-control" id="porcentajeDescuento"
-														name="porcentajeDescuento" placeholder="Descuento Aplicado"
-														min="0" max="100">
+													<label for="porcentajeDescuento">Descuento Aplicado</label> 
+													<input type="number" class="form-control"
+														id="porcentajeDescuento" name="porcentajeDescuento"
+														placeholder="Descuento Aplicado">
 												</div>
 												<div class="form-group">
-													<label for="cantidadDisponible">Stock</label> <input type="number"
-														class="form-control" id="cantidadDisponible" name="cantidadDisponible"
-														placeholder="Stock" required="required">
-												</div>
-												<div class="form-group">
-													<label for="fechaIniVigencia">Fecha de Inicio de
-														Vigencia</label> <input class="form-control" id="fechaIniVigencia"
-														name="fechaIniVigencia" required="required"
-														placeholder="Fecha de Inicio de Vigencia" type="date"
-														class="form-control" pattern="dd/MM/yyyy"
-														placeholder="dd/mm/yyyy">
+													<label for="cantidadDisponible">Stock</label> <input
+														type="number" class="form-control" id="cantidadDisponible"
+														name="cantidadDisponible" placeholder="Stock"
+														required="required">
 												</div>
 
-
 												<div class="form-group">
-													<label for="fechaFinVigencia">Fecha de Fin de
-														Vigencia</label> <input class="form-control" id="fechaFinVigencia"
-														name="fechaFinVigencia" required="required"
-														placeholder="Fecha de Fin de Vigencia" type="date"
-														class="form-control" pattern="dd/MM/yyyy"
-														placeholder="dd/mm/yyyy">
-												</div>
-												<div class="form-group">
-													<label for="restriccionCantidad">Restricción de
-														Cantidad</label> <input type="number" class="form-control"
-														id="restriccionCantidad" name="restriccionCantidad" required="required"
-														placeholder="Restricción de Cantidad">
+													<label for="restriccionCantidad">Dias Vigencia</label> <input
+														type="number" class="form-control" id="diasVigencia"
+														name="diasVigencia" required="required"
+														placeholder="Dias de Vigencia">
 												</div>
 
 												<div class="modal-footer">
@@ -129,12 +114,58 @@
 					<th class="table-hover">Producto</th>
 					<th>Porcentaje Descuento</th>
 					<th>Cantidad</th>
+					<th>Seleccione</th>
 				</tr>
 				<c:forEach var="producto" items="${productosDescuentoDiario}">
 					<tr>
 						<td>${producto.idProducto}</td>
-						<td>${producto.porcentajeDescuento}</td>
-						<td>${producto.restriccionCantidad}</td>
+						<td>${producto.pctDescuento}</td>
+						<td>${producto.diasVigencia}</td>
+						<td>
+							<button type="button" data-toggle="modal"
+								data-id="${producto.idProducto}"
+								data-target="#eliminarDescuento"
+								class="eliminar-descuento btn btn-primary">eliminar</button>
+
+							<div class="modal fade" id="eliminarDescuento" tabindex="-1"
+								role="dialog" aria-labelledby="exampleModalCenterTitle"
+								aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalCenterTitle">Eliminar
+												Descuento</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<form method="get"
+												action="<c:url value='/analisis/eliminar-descuento'/>">
+												<div class="form-group">
+													<input
+														type="text" class="form-control" id="idProductoEliminar"
+														name="idProducto" readonly="readonly"
+														style="visibility: hidden;">
+
+													<p>¿Está seguro de retirar el producto seleccionado de
+														la lista de descuentos diarios?</p>
+												</div>
+
+												<div class="modal-footer">
+													<button type="submit" class="btn btn-primary">Eliminar</button>
+												</div>
+
+											</form>
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+						</td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -145,6 +176,11 @@
 <script>
 	$(document).on("click", ".agregar-descuento", function() {
 		var idProducto = $(this).data('id');
-		$(".modal-body #idProducto").val(idProducto);
+		$(".modal-body #idProductoAgregar").val(idProducto);
+	});
+
+	$(document).on("click", ".eliminar-descuento", function() {
+		var idProducto = $(this).data('id');
+		$(".modal-body #idProductoEliminar").val(idProducto);
 	});
 </script>
