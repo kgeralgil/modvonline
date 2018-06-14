@@ -79,5 +79,12 @@ public class AnalisisRepository {
 				productoDescuento.getPctDescuento(), productoDescuento.getDiasVigencia(),"D",1);
 		
 	}
+	
+	public void eliminarDescuentoDiario(int idProducto) {
+
+		jdbcTemplate.update("DELETE productodescuento where tipoDescuento = 'D' and idProducto = ? ",
+				idProducto);
+		
+	}
 
 }

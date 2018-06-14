@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +20,28 @@ import org.tottus.ventaonline.service.AnalisisService;
 import org.tottus.ventaonline.utils.Constantes;
 
 @Controller
-@Scope("session")
 @RequestMapping("/analisis")
 public class AnalisisController {
 
 	private static final String VIEW_SUFFIX = "analisis-";
 	private List<ProductoDescuento> productosEnDescuentoDiario;
 	private List<ProductosParaDescuentoDiario> productos;
+
+	public List<ProductoDescuento> getProductosEnDescuentoDiario() {
+		return productosEnDescuentoDiario;
+	}
+
+	public void setProductosEnDescuentoDiario(List<ProductoDescuento> productosEnDescuentoDiario) {
+		this.productosEnDescuentoDiario = productosEnDescuentoDiario;
+	}
+
+	public List<ProductosParaDescuentoDiario> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(List<ProductosParaDescuentoDiario> productos) {
+		this.productos = productos;
+	}
 
 	@Autowired
 	private AnalisisService analisisService;
@@ -47,7 +61,7 @@ public class AnalisisController {
 
 		productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni,
 				fechaFin);
-		request.getSession().setAttribute("productosParaDescuento", productos);
+		request.setAttribute("productosParaDescuento", productos);
 		System.out.println("Productos para descuento " + productos.size());
 		if (productos.size() == 0) {
 			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
@@ -57,8 +71,10 @@ public class AnalisisController {
 		
 		
 		productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
+		request.setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+
 		System.out.println("Producto en descuento "+ productosEnDescuentoDiario.size());
-		request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+		
 		if (productosEnDescuentoDiario.size() == 0) {
 			request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
 		} else {
@@ -68,31 +84,40 @@ public class AnalisisController {
 		return "analisis-principal";
 	}
 
-	@RequestMapping(value = "/agregar-descuento", method = RequestMethod.POST)
+	@RequestMapping(value = "/agregar-descuento", method = RequestMethod.GET)
 	public String agregarDescuento(RedirectAttributes redir, @RequestParam(name = "idProducto") int idProducto,
 			@RequestParam(name = "porcentajeDescuento") double porcentajeDescuento,
 			@RequestParam(name = "cantidadDisponible") int cantidadDisponible,
 			@RequestParam(name = "diasVigencia") int diasvigencia, HttpServletRequest request) {
-
+		System.out.println("Productos para descuento * " + productos.size());
+		System.out.println("Producto en descuento * "+ productosEnDescuentoDiario.size());
+		
 		ProductoDescuento productoDescuento = new ProductoDescuento();
 		productoDescuento.setIdProducto(idProducto);
 		productoDescuento.setPctDescuento(porcentajeDescuento);
 		productoDescuento.setCantDisponible(cantidadDisponible);
 		productoDescuento.setDiasVigencia(diasvigencia);
-
 		
-		productos = (List<ProductosParaDescuentoDiario>) request.getSession().getAttribute("productosParaDescuento");
-		productosEnDescuentoDiario = (List<ProductoDescuento>) request.getSession().getAttribute("productosDescuentoDiario");
-
+		//Contemplar: Si el stock a agregar mayor al stock actual del producto
+			
+		for (int i = 0; i < productos.size(); i++) {
+			if(productos.get(i).getIdProducto()==productoDescuento.getIdProducto()){
+				if(productos.get(0).getStockActual()<productoDescuento.getCantDisponible()){
+					Map<String, Object> resultado = new HashMap<>();
+					resultado.put("mensaje", Constantes.ERR_STOCK_INSUFICIENTE);
+					redir.addFlashAttribute("msg", resultado.get("mensaje"));
+					
+				}
+				break;
+			}
+		}
+		
+		
 		// RN019: Sólo se puede ingresar un máximo de 10 productos a descuentos, diarios por ventas bajas.
-		if (productosEnDescuentoDiario!=null && productosEnDescuentoDiario.size() == 10) {
+		if (productosEnDescuentoDiario.size() == 10) {
 			Map<String, Object> resultado = new HashMap<>();
 			resultado.put("mensaje", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
 			redir.addFlashAttribute("msg", resultado.get("mensaje"));
-		}else if(productos.get(1).getStockActual()<productoDescuento.getCantDisponible()){
-			
-			//Contemplar: Si el stock a agregar es 0 o mayor al stock actual del producto
-			
 		}
 		else{
 			analisisService.agregarDescuentoDiario(productoDescuento);
@@ -107,21 +132,8 @@ public class AnalisisController {
 
 		
 		System.out.println("Descuento Eliminado");
+		analisisService.eliminarDescuentoDiario(idProducto);
 		
-//		ProductoDescuento productoDescuento = new ProductoDescuento();
-//		productoDescuento.setIdProducto(idProducto);
-//
-//		
-//		if (productosEnDescuentoDiario.size() == 10) {
-//			Map<String, Object> resultado = new HashMap<>();
-//			resultado.put("mensaje", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
-//			redir.addFlashAttribute("msg", resultado.get("mensaje"));
-//		}else{
-//			analisisService.agregarDescuentoDiario(productoDescuento);
-//			// RN019: Sólo se puede ingresar un máximo de 10 productos a descuentos, diarios por ventas bajas.
-//			System.out.println("Cantidad de productos diarios registrados "+ productosEnDescuentoDiario.size());
-//		}
-
 		return "analisis-principal";
 	}
 
