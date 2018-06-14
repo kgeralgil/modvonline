@@ -38,12 +38,13 @@
 				<tr class="table-success">
 					<th class="table-hover">Producto</th>
 					<th>Porcentaje de Venta</th>
-					<th>Stock Actual</th>
+					<th>Stock Disponible</th>
 					<th>Seleccione</th>
 				</tr>
 				<c:forEach var="producto" items="${productosParaDescuento}">
 					<tr>
 						<td>${producto.descripcionProducto}</td>
+
 						<td><fmt:formatNumber type="percent" maxFractionDigits="2"
 								value="${producto.porcentajeVenta}" /></td>
 						<td>${producto.stockActual}</td>
@@ -126,14 +127,18 @@
 				<tr class="table-success">
 					<th class="table-hover">Producto</th>
 					<th>Porcentaje Descuento</th>
+					<th>Fecha Creación Descuento</th>
 					<th>Dias Vigencia</th>
 					<th>Dias en Descuento</th>
 					<th>Seleccione</th>
 				</tr>
 				<c:forEach var="producto" items="${productosDescuentoDiario}">
 					<tr>
-						<td>${producto.idProducto}</td>
-						<td>${producto.pctDescuento}</td>
+
+						<td>${producto.descProducto}</td>
+						<td><fmt:formatNumber type="percent" maxFractionDigits="2" pattern="###.##" 
+								value="${producto.pctDescuento}" />%</td>
+						<td>${producto.fechaCreacion}</td>
 						<td>${producto.diasVigencia}</td>
 						<td>${producto.diasEnDescuento}</td>
 						<td>
@@ -168,7 +173,10 @@
 												</div>
 
 												<div class="modal-footer">
-													<button type="reset" class="btn btn-primary">Cancelar</button>
+													<button type="reset" class="btn btn-primary"
+														data-dismiss="modal" aria-label="Close">
+														Cancelar <span aria-hidden="true">&times;</span>
+													</button>
 													<button type="submit" class="btn btn-primary">Eliminar</button>
 												</div>
 

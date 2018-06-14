@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity(name = "productodescuento")
 public class ProductoDescuento {
@@ -13,6 +14,7 @@ public class ProductoDescuento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idProductoDescuento;
+	private String descProducto;
 	private String codDescuento;
 	private int idProducto;
 	private String tipoDescuento;
@@ -24,6 +26,13 @@ public class ProductoDescuento {
 	private int cantDisponibleAdic;
 	private int unidadesProdDescuento;
 	private int diasVigencia;
+
+	private int usuarioCreacion;
+	private Date fechaCreacion;
+	private int usuarioModificacion;
+	private Date fechaModificacion;
+	
+	@Transient
 	private int diasEnDescuento;
 	
 	public ProductoDescuento() {
@@ -101,11 +110,6 @@ public class ProductoDescuento {
 	public void setDiasVigencia(int diasVigencia) {
 		this.diasVigencia = diasVigencia;
 	}
-
-	private int usuarioCreacion;
-	private Date fechaCreacion;
-	private int usuarioModificacion;
-	private Date fechaModificacion;
 	
 	public int getIdProducto() {
 		return idProducto;
@@ -170,6 +174,14 @@ public class ProductoDescuento {
 	
 	public void setDiasEnDescuento(int diasEnDescuento) {
 		this.diasEnDescuento = diasEnDescuento;
+	}
+
+	public String getDescProducto() {
+		return descProducto;
+	}
+
+	public void setDescProducto(String descProducto) {
+		this.descProducto = descProducto;
 	}
 
 }

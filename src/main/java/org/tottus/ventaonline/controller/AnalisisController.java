@@ -122,7 +122,7 @@ public class AnalisisController {
 
 			} else {
 				analisisService.agregarDescuentoDiario(productoDescuento);
-
+				request.setAttribute("msg", Constantes.MSG_PRODUCTO_AGREGADO_DESCUENTODIARIO);
 				productosEnDescuentoDiario.add(productoDescuento);
 
 				request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);

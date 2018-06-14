@@ -27,13 +27,16 @@ public class AnalisisRepository {
 	// Consultar Productos en Descuento Diario actual
 	public List<ProductoDescuento> ConsultarProductosEnDescuento(int estado) {
 
-		String sql = "select idProducto,cantDisponible,tipoDescuento,pctDescuento,diasVigencia,fechaCreacion "
-				+ " from productodescuento where estado like ?";
+		String sql = "select pd.idProducto,p.descripcion,pd.cantDisponible,pd.pctDescuento,pd.diasVigencia,pd.fechaCreacion "
+				+ " from productodescuento pd join producto p on pd.idProducto=p.idProducto where "
+				+ " pd.tipoDescuento = 'D' and pd.estado = ?";
 
 		RowMapper<ProductoDescuento> mapper = new RowMapper<ProductoDescuento>() {
 			public ProductoDescuento mapRow(ResultSet rs, int rowNum) throws SQLException {
 				ProductoDescuento prDescuento = new ProductoDescuento();
 				prDescuento.setIdProducto(rs.getInt("idProducto"));
+				prDescuento.setDescProducto(rs.getString("descripcion"));
+				prDescuento.setCantDisponible(rs.getInt("cantDisponible"));
 				prDescuento.setPctDescuento(rs.getDouble("pctDescuento"));
 				prDescuento.setDiasVigencia(rs.getInt("diasVigencia"));
 				prDescuento.setFechaCreacion(rs.getDate("fechaCreacion"));
@@ -42,7 +45,7 @@ public class AnalisisRepository {
 				return prDescuento;
 			}
 		};
-
+		
 		return jdbcTemplate.query(sql, new Object[] { estado }, mapper);
 
 	}
