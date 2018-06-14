@@ -26,6 +26,11 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import pe.edu.upc.tottus.R;
 import pe.edu.upc.tottus.activities.ScanActivity;
 import pe.edu.upc.tottus.models.Product;
@@ -68,8 +73,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-      // startActivityForResult(new Intent(getContext(), ScanActivity.class), REQUEST_CODE);
-        getProduct("DESC001");
+      startActivityForResult(new Intent(getContext(), ScanActivity.class), REQUEST_CODE);
+        //getProduct("DESC001");
     }
 
     @Override
@@ -82,33 +87,50 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void showAlert(String message){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
+        builder.setTitle("Error")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     private void getProduct(String code) {
         String deviceId = DeviceUtil.getAndroidId(getContext());
-        AndroidNetworking.post(ApiService.PRODUCT_URL + code)
-                .addBodyParameter("idmovil", deviceId)
-                .setPriority(Priority.LOW)
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("idmovil", deviceId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        AndroidNetworking.post(ApiService.DISCOUNT_URL + code)
+                .addJSONObjectBody(jsonObject)
+                .addHeaders("Content-Type", "application/json")
                 .setTag(getString(R.string.app_name))
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if (1 != Integer.parseInt(response.getString("code"))) {
-                                AlertDialog.Builder builder;
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
-                                } else {
-                                    builder = new AlertDialog.Builder(getContext());
-                                }
-                                builder.setTitle("Error")
-                                        .setMessage(response.getString("message"))
-                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        })
-                                        .setIcon(android.R.drawable.ic_dialog_alert)
-                                        .show();
+                            /*if (1 != Integer.parseInt(response.getString("code"))) {
+                                showAlert(response.getString("message"));
+                                return;
+                            }*/
+
+                            if (response.isNull("data")){
+                                showAlert("No se encontraron datos");
                                 return;
                             }
 
@@ -119,9 +141,14 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                                 productQuantity.setText("Cantidad máxima: " + product.getQuantityRestriction());
                                 productPrice.setText("Precio normal: " + product.getPrice() + " (-" + product.getDiscount()+"%)");
                                 productDiscount.setText("Ahora: " + product.getUnitPriceDis());
-                                productValidDate.setText("Promoción válida hasta: " + product.getValidDays());
 
-                                Bitmap bm = ImageUtil.decodeBase64(ApiService.IMAGE);
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTimeInMillis(Long.parseLong(product.getDueDate()));
+                                SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+
+                                productValidDate.setText("Promoción válida hasta: " + format1.format(cal.getTime()));
+
+                                Bitmap bm = ImageUtil.decodeBase64(product.getImage());
                                 productImage.setImageBitmap(bm);
                             }
 
