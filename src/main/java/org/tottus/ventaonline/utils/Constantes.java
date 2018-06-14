@@ -14,4 +14,6 @@ public class Constantes {
 	public static final String ERR_MAX10_PRODUCTOSDIARIOS = "Se tienen 10 productos configurados como máximo en descuento diario";
 	public static final String ERR_PRODUCTO_DESCUENTOTRADICIONAL = "El producto elegido ya cuenta con un descuento activo";
 	public static final String MSG_P = "No hay productos con niveles de venta inferiores al esperado";
+	
+	public static final String ERR_NOMBRE_PROD_NULO = "Para brindarte un mejor servicio, te invitamos a que ingreses el nombre del producto.";
 }

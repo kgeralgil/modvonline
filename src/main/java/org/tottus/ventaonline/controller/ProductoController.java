@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tottus.ventaonline.model.Producto;
 import org.tottus.ventaonline.model.sorter.ProdFVencimientoSorterStrategy;
 import org.tottus.ventaonline.model.sorter.ProductoSorterContext;
 import org.tottus.ventaonline.service.ProductoService;
+import org.tottus.ventaonline.utils.Constantes;
 
 @Controller
 @RequestMapping("/productos")
@@ -27,16 +29,19 @@ public class ProductoController {
 	}
 
 	@RequestMapping("/consultar")
-	public String consultarProductos(@RequestParam String codigoProducto, HttpServletRequest request) {
-
-		List<Producto> productos = productoService.filtrarProductosXNombre(codigoProducto);
+	public String consultarProductos(@RequestParam("textoBusqueda") String text, 
+			HttpServletRequest request, RedirectAttributes redir) {
+		if(null == text || text.isEmpty()){
+			redir.addFlashAttribute("msg", Constantes.ERR_NOMBRE_PROD_NULO);
+			return "redirect:/productos/";
+		}
+		List<Producto> productos = productoService.filtrarProductosXNombre(text);
 		request.setAttribute("productos", productos);
 		if (productos.size() == 0) {
 			request.setAttribute("modo", "MODO_VACIO");
 		} else {
 			request.setAttribute("modo", "MODO_CONSULTA");
 		}
-
 		return "busquedaProducto";
 	}
 
@@ -58,8 +63,6 @@ public class ProductoController {
 		request.setAttribute("productosRecomendados", productosRecomendados);
 		if (productosRecomendados.size() > 0) {
 			request.setAttribute("recomendacion", "MODO_LISTA");
-		} else {
-			System.out.println("Prueba----->" + productosRecomendados.size());
 		}
 		return "busquedaProducto";
 	}

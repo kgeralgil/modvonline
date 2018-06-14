@@ -17,12 +17,12 @@
 	
 	<!-- Producto -->
 	<definition name="busquedaProducto" extends="mainLayout">
-		<put-attribute name="body" value="/views/busquedaProducto.jsp" />
+		<put-attribute name="body" value="/views/producto.jsp" />
 	</definition>
 	
 	<!-- Descuento Diario -->
 	<definition name="descuento-principal" extends="mainLayout">
-		<put-attribute name="body" value="/views/cus04_descDiario/index.jsp" />
+		<put-attribute name="body" value="/views/descuentoDiario.jsp" />
 	</definition>
 	
 	<!-- Reporte Analitico -->

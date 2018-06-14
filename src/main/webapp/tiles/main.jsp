@@ -50,9 +50,6 @@
 			}
 
 		});
-		
-	
-
 	</script>
 </body>
 </html>

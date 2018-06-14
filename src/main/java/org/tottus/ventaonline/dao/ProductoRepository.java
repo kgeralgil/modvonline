@@ -1,5 +1,6 @@
 package org.tottus.ventaonline.dao;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -139,6 +140,8 @@ public class ProductoRepository {
 
 				byte[] bytes = rs.getBytes("imagen");
 				byte[] encodeBase64 = Base64.encodeBase64(bytes);
+				
+				
 				String base64Encoded;
 				try {
 					base64Encoded = new String(encodeBase64, "UTF-8");

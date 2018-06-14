@@ -2,11 +2,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <form method="get" action="<c:url value='/productos/consultar' />">
+	<label>Nombre de Producto</label>
 	<div
 		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
 		<div class="input-group mb-3">
-			<input name="codigoProducto" type="text" class="form-control"
+			<input name="textoBusqueda" type="text" class="form-control"
 				placeholder="Escribe aqui el producto a consultar" />
 			<div class="input-group-append">
 				<input class="btn btn-outline-secondary" type="submit"
@@ -20,7 +21,7 @@
 	<c:choose>
 		<c:when test="${modo=='MODO_HOME'}"></c:when>
 		<c:when test="${modo=='MODO_VACIO'}">
-			<h1>No se encontró algun producto relacionado a la consulta!</h1>
+			<h4>No se han encontrado resultados para su b&uacute;squeda</h4>
 		</c:when>
 		<c:when test="${modo=='MODO_CONSULTA'}">
 			<div class="row">
