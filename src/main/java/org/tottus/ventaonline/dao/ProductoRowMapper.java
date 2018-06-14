@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.jdbc.core.RowMapper;

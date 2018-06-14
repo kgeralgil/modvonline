@@ -16,4 +16,5 @@ public class Constantes {
 	public static final String MSG_P = "No hay productos con niveles de venta inferiores al esperado";
 	public static final String ERR_STOCK_INSUFICIENTE = "Stock insuficiente";
 	public static final String ERR_NOMBRE_PROD_NULO = "Para brindarte un mejor servicio, te invitamos a que ingreses el nombre del producto.";
+	public static final String ERR_GENERICO = "Estamos trabajando para brindarle un mejor servicio. Te invitamos a que visites nuestra sección de Productos http://www.tottus.com.pe/"; 	
 }

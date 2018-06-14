@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tottus.ventaonline.service.DescuentoService;
+import org.tottus.ventaonline.utils.Constantes;
 
 @Controller
 @RequestMapping("/descuentos")
@@ -26,9 +27,14 @@ public class DescuentoController {
 	
 	@RequestMapping(value = "/generar", method = RequestMethod.POST)
 	public String generarDescuento(RedirectAttributes redir, @RequestParam String dni) {
-		Map<String, Object> resultado = descuentoService.generarDescuentosDiarios(dni);
-		redir.addFlashAttribute("msg", resultado.get("mensaje"));
-		redir.addFlashAttribute("descuentos", resultado.get("descuentos"));
+		try {
+			Map<String, Object> resultado = descuentoService.generarDescuentosDiarios(dni);
+			redir.addFlashAttribute("msg", resultado.get("mensaje"));
+			redir.addFlashAttribute("descuentos", resultado.get("descuentos"));
+		} catch (Exception e){
+			redir.addFlashAttribute("msg", Constantes.ERR_GENERICO);
+			e.printStackTrace();
+		}
 		return "redirect:/descuentos/";
 	}
 	

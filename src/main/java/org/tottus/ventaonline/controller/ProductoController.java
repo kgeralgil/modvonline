@@ -31,40 +31,55 @@ public class ProductoController {
 	@RequestMapping("/consultar")
 	public String consultarProductos(@RequestParam("textoBusqueda") String text, 
 			HttpServletRequest request, RedirectAttributes redir) {
-		if(null == text || text.isEmpty()){
-			redir.addFlashAttribute("msg", Constantes.ERR_NOMBRE_PROD_NULO);
-			return "redirect:/productos/";
+		String returnPage = "busquedaProducto";
+		try {
+			if(null == text || text.isEmpty()){
+				redir.addFlashAttribute("msg", Constantes.ERR_NOMBRE_PROD_NULO);
+				returnPage = "redirect:/productos/"; 
+			}
+			List<Producto> productos = productoService.filtrarProductosXNombre(text);
+			request.setAttribute("productos", productos);
+			if (productos.size() == 0) {
+				request.setAttribute("modo", "MODO_VACIO");
+			} else {
+				request.setAttribute("modo", "MODO_CONSULTA");
+			}
+		} catch (Exception e){
+			redir.addFlashAttribute("msg", Constantes.ERR_GENERICO);
+			returnPage = "redirect:/productos/";
+			e.printStackTrace();
 		}
-		List<Producto> productos = productoService.filtrarProductosXNombre(text);
-		request.setAttribute("productos", productos);
-		if (productos.size() == 0) {
-			request.setAttribute("modo", "MODO_VACIO");
-		} else {
-			request.setAttribute("modo", "MODO_CONSULTA");
-		}
-		return "busquedaProducto";
+		return returnPage;
 	}
 
 	@RequestMapping("/agregar")
-	public String consultarProductos(@RequestParam int idProducto, HttpServletRequest request) {
-		request.setAttribute("modo", "MODO_RECOMENDACION");
-		List<Producto> productosRecomendados = productoService.buscarProductosRecomendadosXIdProducto(idProducto);
-		
-		// Ordenar Productos
-		ProductoSorterContext sorterContext = new ProductoSorterContext();
-		sorterContext.setSortStrategy(new ProdFVencimientoSorterStrategy());
-		sorterContext.sortProducto(productosRecomendados);
-		
-		if(productosRecomendados.size() >= 4){
-			productosRecomendados = productosRecomendados.subList(0, 4);
-		}
-		
-		request.setAttribute("productoAgregado", productoService.buscarProdcuctoXId(idProducto));
-		request.setAttribute("productosRecomendados", productosRecomendados);
-		if (productosRecomendados.size() > 0) {
-			request.setAttribute("recomendacion", "MODO_LISTA");
-		}
-		return "busquedaProducto";
+	public String consultarProductos(@RequestParam int idProducto, 
+			HttpServletRequest request, RedirectAttributes redir) {
+		String returnPage = "busquedaProducto";
+		try {
+			request.setAttribute("modo", "MODO_RECOMENDACION");
+			List<Producto> productosRecomendados = productoService.buscarProductosRecomendadosXIdProducto(idProducto);
+			
+			// Ordenar Productos
+			ProductoSorterContext sorterContext = new ProductoSorterContext();
+			sorterContext.setSortStrategy(new ProdFVencimientoSorterStrategy());
+			sorterContext.sortProducto(productosRecomendados);
+			
+			if(productosRecomendados.size() >= 4){
+				productosRecomendados = productosRecomendados.subList(0, 4);
+			}
+			
+			request.setAttribute("productoAgregado", productoService.buscarProdcuctoXId(idProducto));
+			request.setAttribute("productosRecomendados", productosRecomendados);
+			if (productosRecomendados.size() > 0) {
+				request.setAttribute("recomendacion", "MODO_LISTA");
+			}
+		} catch (Exception e){
+			redir.addFlashAttribute("msg", Constantes.ERR_GENERICO);
+			returnPage = "redirect:/productos/";
+			e.printStackTrace();
+		} 
+		return returnPage;
 	}
 
 }

@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <form method="post" action="<c:url value='/descuentos/generar' />">
-	<label>Documento de Identidad</label>
+	<label>DNI</label>
 	<div
 		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 		<div class="input-group mb-3">
@@ -27,15 +27,17 @@
 							<h4 class="my-0 font-weight-normal">${descuento.descripcion}</h4>
 						</div>
 						<div class="card-body">
-							<h1 class="card-title pricing-card-title">
+							<p class="card-title pricing-card-title">
+							<b>
 								<fmt:formatNumber type="number" minFractionDigits="2"
- 									maxFractionDigits="2" value="${descuento.porcentajeDescuento}" /> %
+ 									maxFractionDigits="2" value="${descuento.porcentajeDescuento}" />%
  									de descuento
-							</h1>
-							<h3>V&aacute;lido hasta:
+							</b>
+							</p>
+							<p>V&aacute;lido hasta:
 								<fmt:formatDate pattern = "dd/MM/yyyy" value="${descuento.fechaCaducidad}" /> 
-							</h3>
-							<h3>C&oacute;digo de descuento: <span>${descuento.codDescuento}</span></h3>
+							</p>
+							<p>C&oacute;digo de descuento: <b><span>${descuento.codDescuento}</span></b></p>
 						</div>
 					</div>
 				</div>
