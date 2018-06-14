@@ -17,21 +17,6 @@
 					<span data-feather="file"></span> Estadístico de Ventas
 				</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#"> 
-					<span data-feather="shopping-cart"></span> Venta Presencial
-				</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/"> 
-					<span data-feather="online-sell"></span> Venta Online
-				</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#"> 
-					<span data-feather="users"></span> Anomalias de Caja
-				</a>
-			</li>
 		</ul>
 	</div>
 </nav>
