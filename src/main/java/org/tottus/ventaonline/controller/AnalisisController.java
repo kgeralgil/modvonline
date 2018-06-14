@@ -60,18 +60,19 @@ public class AnalisisController {
 		System.out.println(fechaIni + "-" + fechaFin);
 
 		productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
-		request.setAttribute("productosParaDescuento", productos);
+		request.getSession().setAttribute("productosParaDescuento", productos);
 		System.out.println("Productos para descuento " + productos.size());
 		if (productos.size() == 0) {
 			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
 		} else {
 			request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
 		}
-		
+
 		productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
-		request.setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
-		
-		System.out.println("Producto en descuento "+ productosEnDescuentoDiario.size());
+
+		request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+
+		System.out.println("Producto en descuento " + productosEnDescuentoDiario.size());
 
 		if (productosEnDescuentoDiario.size() == 0) {
 			request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
@@ -105,7 +106,7 @@ public class AnalisisController {
 					Map<String, Object> resultado = new HashMap<>();
 					resultado.put("mensaje", Constantes.ERR_STOCK_INSUFICIENTE);
 					redir.addFlashAttribute("msg", resultado.get("mensaje"));
-		
+
 				}
 				break;
 			}
@@ -119,23 +120,56 @@ public class AnalisisController {
 			redir.addFlashAttribute("msg", resultado.get("mensaje"));
 		} else {
 			analisisService.agregarDescuentoDiario(productoDescuento);
-			System.out.println("Cantidad de productos diarios registrados "+ productosEnDescuentoDiario.size());
+
+			productosEnDescuentoDiario.add(productoDescuento);
+
+			request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+
+			System.out.println("Cantidad de productos diarios registrados " + productosEnDescuentoDiario.size());
+		}
+
+		if (productos.size() == 0) {
+			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
+		} else {
+			request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
+		}
+
+		if (productosEnDescuentoDiario.size() == 0) {
+			request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
+		} else {
+			request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
 		}
 
 		return "analisis-principal";
 	}
-	
+
 	@RequestMapping(value = "/eliminar-descuento", method = RequestMethod.GET)
 	public String eliminarDescuento(RedirectAttributes redir, @RequestParam(name = "idProducto") int idProducto,
 			HttpServletRequest request) {
 
-		
 		System.out.println("Descuento Eliminado");
 		analisisService.eliminarDescuentoDiario(idProducto);
-		
-		// Volver a listar los productos con descuento
-		productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
-		request.setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+
+		for (int i = 0; i < productosEnDescuentoDiario.size(); i++) {
+			if (productosEnDescuentoDiario.get(i).getIdProducto() == idProducto) {
+				productosEnDescuentoDiario.remove(i);
+			}
+		}
+
+		request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+
+		if (productos.size() == 0) {
+			request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
+		} else {
+			request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
+		}
+
+		if (productosEnDescuentoDiario.size() == 0) {
+			request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
+		} else {
+			request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
+		}
+
 		return "analisis-principal";
 	}
 
