@@ -11,16 +11,3 @@ public class Application {
 	}
 
 }
-
-
-/*
- * CREATE TABLE `bd_tottus`.`controlpromocion` (
-  `idcontrolpromocion` INT NOT NULL AUTO_INCREMENT,
-  `idequipomovil` VARCHAR(45) NULL,
-  `codproducto` VARCHAR(45) NULL,
-  `fecharegistro` VARCHAR(45) NULL,
-  `estado` VARCHAR(45) NULL,
-  PRIMARY KEY (`idcontrolpromocion`));
-*/
- 
- 

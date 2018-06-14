@@ -12,7 +12,7 @@
 <!-- JS -->
 <script src="/jquery-3.3.1.min.js"></script>
 <script src="/toastr.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<script src="/bootstrap.min.js"></script>
 
 <!-- CSS -->
 <link rel="stylesheet" href="/bootstrap.min.css" />

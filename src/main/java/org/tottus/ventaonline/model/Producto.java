@@ -14,15 +14,6 @@ public class Producto {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idProducto;
 	private String codigoProducto;
-	private String marca;
-	public String getMarca() {
-		return marca;
-	}
-
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
-
 	private String descripcion;
 	private double precioUnitario;
 	private String imagen;
@@ -123,8 +114,6 @@ public class Producto {
 
 	public void setPrecioUnitarioDescuento(double precioUnitarioDescuento) {
 		this.precioUnitarioDescuento = precioUnitarioDescuento;
-	}
-	
-	
+	}	
 
 }

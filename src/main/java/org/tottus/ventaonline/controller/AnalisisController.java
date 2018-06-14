@@ -68,6 +68,7 @@ public class AnalisisController {
 		return "analisis-principal";
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/agregar-descuento", method = RequestMethod.POST)
 	public String agregarDescuento(RedirectAttributes redir, @RequestParam(name = "idProducto") int idProducto,
 			@RequestParam(name = "porcentajeDescuento") double porcentajeDescuento,
