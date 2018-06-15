@@ -58,7 +58,7 @@ public class DescuentoRepository {
 		try {
 			result = descuentoQRSP.generateQRDiscount(codDiscount, deviceId); 
 		} catch (Exception e){
-			result.put("codResultado", 1);
+			result.put("codResultado", 0);
 			result.put("msgResultado", "Error generico");
 		}
 		return result;
