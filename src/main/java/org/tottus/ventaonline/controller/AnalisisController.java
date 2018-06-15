@@ -107,7 +107,7 @@ public class AnalisisController {
 			// producto
 			for (int i = 0; i < productos.size(); i++) {
 				if (productos.get(i).getIdProducto() == productoDescuento.getIdProducto()) {
-					if (productos.get(0).getStockActual() < productoDescuento.getCantDisponible()) {
+					if (0.3*productos.get(i).getStockActual() < productoDescuento.getCantDisponible()) {
 						errorStock = true;
 						request.setAttribute("msg", Constantes.ERR_STOCK_INSUFICIENTE);
 						System.out.println("stock insuficiente  ****************");
@@ -116,7 +116,7 @@ public class AnalisisController {
 					break;
 				}
 			}
-
+			System.out.println("Dias Vigencias  ****************"+productoDescuento.getDiasVigencia());
 			if (errorStock == false) {
 
 				// RN019: Sólo se puede ingresar un máximo de 10 productos a
@@ -125,6 +125,10 @@ public class AnalisisController {
 				if (productosEnDescuentoDiario.size() == 10) {
 					request.setAttribute("msg", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
 					System.out.println("Prodcutos con descuento Diario son 10 ****************");
+
+				}else if (productoDescuento.getDiasVigencia()<3&&productoDescuento.getDiasVigencia()>15) {
+					request.setAttribute("msg", Constantes.ERR_DIAS_VIGENCIAS_FUERARANGO);
+					System.out.println("Dias Vigencias  ****************"+productoDescuento.getDiasVigencia());
 
 				} else {
 					analisisService.agregarDescuentoDiario(productoDescuento);

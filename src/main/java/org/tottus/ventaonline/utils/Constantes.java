@@ -13,7 +13,7 @@ public class Constantes {
 	public static final String ERR_DNI_NO_REGISTRADO = "El DNI ingresado no se encuentra registrado. Por favor regístrese e inténtelo nuevamente.";
 	public static final String ERR_MAX10_PRODUCTOSDIARIOS = "Se tienen 10 productos configurados como máximo en descuento diario";
 	public static final String ERR_PRODUCTO_DESCUENTOTRADICIONAL = "El producto elegido ya cuenta con un descuento activo";
-	public static final String ERR_STOCK_INSUFICIENTE = "Stock insuficiente";
+	public static final String ERR_STOCK_INSUFICIENTE = "Las unidades a agregar a Descuento Diario no debe exceder el 30% del Stock Actual";
 	public static final String ERR_NOMBRE_PROD_NULO = "Para brindarte un mejor servicio, te invitamos a que ingreses el nombre del producto.";
 	public static final String ERR_GENERICO = "Estamos trabajando para brindarle un mejor servicio. Te invitamos a que visites nuestra sección de Productos http://www.tottus.com.pe/";
 	
@@ -25,4 +25,6 @@ public class Constantes {
 	//public static final String MSG_PRODUCTO_AGREGADO_DESCUENTODIARIO  = "Producto agregado a la lista de descuento diario";
 
 	public static final String ERR_FECHA_INCORRECTAS = "Fecha Inicial no puede ser mayor a la fecha Final";
+
+	public static final String ERR_DIAS_VIGENCIAS_FUERARANGO = "Días de vigencias puede tener valores entre 3 y 15";
 }
