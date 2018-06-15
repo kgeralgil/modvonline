@@ -126,15 +126,15 @@ public class SearchQRFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            /*if (1 != Integer.parseInt(response.getString("code"))) {
+                            if (1 != Integer.parseInt(response.getString("code"))) {
                                 btnCart.setVisibility(View.GONE);
                                 showAlert(response.getString("message"));
                                 return;
-                            }*/
+                            }
 
                             if (response.isNull("data")){
                                 btnCart.setVisibility(View.GONE);
-                                showAlert("No se encontraron datos");
+                                showAlert("No se encontraron descuentos");
                                 return;
                             }
 
@@ -145,20 +145,22 @@ public class SearchQRFragment extends Fragment implements View.OnClickListener {
 
                                 productName.setText(product.getDescription() + " - " + product.getName());
                                 productQuantity.setText("Cantidad máxima: " + product.getQuantityRestriction());
-                                productPrice.setText("Precio normal: " + product.getPrice() + " (-" + product.getDiscount()+"%)");
-                                productDiscount.setText("Ahora: " + product.getUnitPriceDis());
+                                productPrice.setText("Precio normal: S/." + product.getPrice() + " (-" + product.getDiscount()+"%)");
+                                productDiscount.setText("Ahora: S/." + product.getUnitPriceDis());
                                 productValidDate.setText("Promoción válida hasta: " + product.getDueDate());
                                 productImage.setImageBitmap(product.getImage());
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            showAlert("No se encontraron descuentos");
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
                         Log.e(getString(R.string.app_name), anError.getLocalizedMessage());
+                        showAlert("No se encontraron descuentos");
                     }
                 });
     }
