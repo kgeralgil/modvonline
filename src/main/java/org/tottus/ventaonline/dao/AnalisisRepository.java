@@ -80,9 +80,9 @@ public class AnalisisRepository {
 	public void agregarDescuentoDiario(ProductoDescuento productoDescuento) {
 		Date date = new Date();
 		jdbcTemplate.update(
-				"INSERT INTO productodescuento (idProducto, cantDisponible,pctDescuento,diasVigencia,tipoDescuento,estado,fechacreacion) VALUES (?, ?, ?, ?, ?, ?,?)",
+				"INSERT INTO productodescuento (idProducto, cantDisponible,pctDescuento,diasVigencia,tipoDescuento,estado,fechacreacion,fuente) VALUES (?, ?, ?, ?, ?, ?,?,?)",
 				productoDescuento.getIdProducto(), productoDescuento.getCantDisponible(),
-				productoDescuento.getPctDescuento(), productoDescuento.getDiasVigencia(), "D", 1, date);
+				productoDescuento.getPctDescuento(), productoDescuento.getDiasVigencia(), "D", 1, date,"V");
 
 	}
 

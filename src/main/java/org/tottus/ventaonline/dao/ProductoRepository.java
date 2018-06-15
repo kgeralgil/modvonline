@@ -33,7 +33,7 @@ public class ProductoRepository {
 	public List<Producto> buscarProductosRecomendadosXIdProducto(int idProducto) {
 		String sql = "SELECT  pr.* "
 				+ " FROM productopalabraclave pcc join producto pr on pcc.idProducto=pr.idProducto "
-				+ " where pcc.palabraClave = ( SELECT pc.palabraClave FROM productopalabraclave pc "
+				+ " where pcc.palabraClave in ( SELECT pc.palabraClave FROM productopalabraclave pc "
 				+ " join producto p on p.idProducto=pc.idProducto where p.idProducto=? and pc.estado=1) "
 				+ "and pr.idProducto != ? ";
 		return jdbcTemplate.query(sql, new Object[] { idProducto,idProducto }, new ProductoRowMapper());

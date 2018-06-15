@@ -53,7 +53,11 @@ public class AnalisisController {
 	public String consultarProductosEnDescuento(
 			@RequestParam(name = "fechaIni") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaIni,
 			@RequestParam(name = "fechaFin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
-			HttpServletRequest request) {
+			HttpServletRequest request,RedirectAttributes redir) {
+		
+		try {
+	
+	
 
 		System.out.println(fechaIni + "-" + fechaFin);
 
@@ -81,6 +85,11 @@ public class AnalisisController {
 			} else {
 				request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
 			}
+		}
+		} catch (Exception e) {
+			
+			redir.addFlashAttribute("msg", Constantes.ERR_GENERICO);
+			e.printStackTrace();
 		}
 		return "analisis-principal";
 	}
@@ -126,10 +135,14 @@ public class AnalisisController {
 					request.setAttribute("msg", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
 					System.out.println("Prodcutos con descuento Diario son 10 ****************");
 
-				}else if (productoDescuento.getDiasVigencia()<3&&productoDescuento.getDiasVigencia()>15) {
+				}else if (productoDescuento.getDiasVigencia()<3||productoDescuento.getDiasVigencia()>15) {
 					request.setAttribute("msg", Constantes.ERR_DIAS_VIGENCIAS_FUERARANGO);
 					System.out.println("Dias Vigencias  ****************"+productoDescuento.getDiasVigencia());
-
+					
+				}else if (productoDescuento.getPctDescuento()==0||productoDescuento.getPctDescuento()>=100) {
+					request.setAttribute("msg", Constantes.ERR_PORCENTAJE_INVALIDO);
+					System.out.println("Porcentaje Invalido ****************"+productoDescuento.getPctDescuento());
+					
 				} else {
 					analisisService.agregarDescuentoDiario(productoDescuento);
 					request.setAttribute("msg", Constantes.MSG_PRODUCTO_ACTUALIZADO);

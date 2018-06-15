@@ -27,4 +27,7 @@ public class Constantes {
 	public static final String ERR_FECHA_INCORRECTAS = "Fecha Inicial no puede ser mayor a la fecha Final";
 
 	public static final String ERR_DIAS_VIGENCIAS_FUERARANGO = "Días de vigencias puede tener valores entre 3 y 15";
+
+	public static final String ERR_PORCENTAJE_INVALIDO = "Porcentaje de Descuento inválido";
+	
 }
