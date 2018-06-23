@@ -54,44 +54,33 @@ public class AnalisisController {
 			@RequestParam(name = "fechaIni") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaIni,
 			@RequestParam(name = "fechaFin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
 			HttpServletRequest request,RedirectAttributes redir) {
-		
+
 		try {
-	
-	
 
-		System.out.println(fechaIni + "-" + fechaFin);
-
-		if (fechaFin.before(fechaIni)) {
-			request.setAttribute("msg", Constantes.ERR_FECHA_INCORRECTAS);
-		} else {
-			productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
-
-			request.getSession().setAttribute("productosParaDescuento", productos);
-			System.out.println("Productos para descuento " + productos.size());
-			if (productos.size() <= 1 && productos.get(0).getStockActual() == 0) {
-				request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
+			if (fechaFin.before(fechaIni)) {
+				request.setAttribute("msg", Constantes.ERR_FECHA_INCORRECTAS);
 			} else {
-				request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
+				productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
+				request.getSession().setAttribute("productosParaDescuento", productos);
+				System.out.println("Productos para descuento " + productos.size());
+				if (productos.size() <= 1 && productos.get(0).getStockActual() == 0) {
+					request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
+				} else {
+					request.setAttribute("CproductosParaDescuento", "MODO_CONSULTA");
+				}
+				productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
+				request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
+				if (productosEnDescuentoDiario.size() == 0) {
+					request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
+				} else {
+					request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
+				}
 			}
-
-			productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
-
-			request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
-
-			System.out.println("Producto en descuento " + productosEnDescuentoDiario.size());
-
-			if (productosEnDescuentoDiario.size() == 0) {
-				request.setAttribute("cproductosEnDescuento", "MODO_VACIO_PRODUCTOSDIARIO");
-			} else {
-				request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
-			}
-		}
 		} catch (Exception e) {
-			
 			redir.addFlashAttribute("msg", Constantes.ERR_GENERICO);
 			e.printStackTrace();
 		}
-		return "analisis-principal";
+		return VIEW_SUFFIX + "principal";
 	}
 
 	@RequestMapping(value = "/agregar-descuento", method = RequestMethod.GET)
@@ -101,7 +90,6 @@ public class AnalisisController {
 			@RequestParam(name = "diasVigencia") int diasvigencia, HttpServletRequest request) {
 
 		if (analisisService.consultarProductosParaDescuentoDiario(idProducto) == 0) {
-
 			System.out.println("Productos para descuento * " + productos.size());
 			System.out.println("Producto en descuento * " + productosEnDescuentoDiario.size());
 			boolean errorStock = false;
@@ -119,13 +107,10 @@ public class AnalisisController {
 					if (0.3*productos.get(i).getStockActual() < productoDescuento.getCantDisponible()) {
 						errorStock = true;
 						request.setAttribute("msg", Constantes.ERR_STOCK_INSUFICIENTE);
-						System.out.println("stock insuficiente  ****************");
-
 					}
 					break;
 				}
 			}
-			System.out.println("Dias Vigencias  ****************"+productoDescuento.getDiasVigencia());
 			if (errorStock == false) {
 
 				// RN019: Sólo se puede ingresar un máximo de 10 productos a
@@ -133,34 +118,20 @@ public class AnalisisController {
 				// diarios por ventas bajas.
 				if (productosEnDescuentoDiario.size() == 10) {
 					request.setAttribute("msg", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
-					System.out.println("Prodcutos con descuento Diario son 10 ****************");
-
 				}else if (productoDescuento.getDiasVigencia()<3||productoDescuento.getDiasVigencia()>15) {
 					request.setAttribute("msg", Constantes.ERR_DIAS_VIGENCIAS_FUERARANGO);
-					System.out.println("Dias Vigencias  ****************"+productoDescuento.getDiasVigencia());
-					
 				}else if (productoDescuento.getPctDescuento()==0||productoDescuento.getPctDescuento()>=100) {
 					request.setAttribute("msg", Constantes.ERR_PORCENTAJE_INVALIDO);
-					System.out.println("Porcentaje Invalido ****************"+productoDescuento.getPctDescuento());
-					
 				} else {
 					analisisService.agregarDescuentoDiario(productoDescuento);
 					request.setAttribute("msg", Constantes.MSG_PRODUCTO_ACTUALIZADO);
 					productosEnDescuentoDiario.add(productoDescuento);
-					
-					//-----------------------------
 					productosEnDescuentoDiario = analisisService.ConsultarProductosEnDescuento(1);
-
 					request.getSession().setAttribute("productosDescuentoDiario", productosEnDescuentoDiario);
-
-					System.out
-							.println("Cantidad de productos diarios registrados " + productosEnDescuentoDiario.size());
 				}
 			}
 		} else {
-			
 			request.setAttribute("msg", Constantes.ERR_PRODUCTO_TIENE_DESCUENTO);
-
 		}
 
 		if (productos.size() == 0) {
@@ -174,8 +145,7 @@ public class AnalisisController {
 		} else {
 			request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
 		}
-
-		return "analisis-principal";
+		return VIEW_SUFFIX + "principal";
 	}
 
 	@RequestMapping(value = "/eliminar-descuento", method = RequestMethod.GET)
@@ -206,7 +176,7 @@ public class AnalisisController {
 			request.setAttribute("cproductosEnDescuento", "MODO_LISTA");
 		}
 
-		return "analisis-principal";
+		return VIEW_SUFFIX + "principal";
 	}
 
 }

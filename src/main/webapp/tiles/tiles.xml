@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <!DOCTYPE tiles-definitions PUBLIC  
-        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+ <!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
@@ -14,17 +14,17 @@
 	<definition name="principal" extends="mainLayout">
 		<put-attribute name="body" value="/views/index.jsp" />
 	</definition>
-	
+
 	<!-- Producto -->
-	<definition name="busquedaProducto" extends="mainLayout">
+	<definition name="producto-principal" extends="mainLayout">
 		<put-attribute name="body" value="/views/producto.jsp" />
 	</definition>
-	
+
 	<!-- Descuento Diario -->
 	<definition name="descuento-principal" extends="mainLayout">
 		<put-attribute name="body" value="/views/descuentoDiario.jsp" />
 	</definition>
-	
+
 	<!-- Reporte Analitico -->
 	<definition name="analisis-principal" extends="mainLayout">
 		<put-attribute name="body" value="/views/reporteAnalitico.jsp" />

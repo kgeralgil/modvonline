@@ -19,23 +19,25 @@ import org.tottus.ventaonline.utils.Constantes;
 @RequestMapping("/productos")
 public class ProductoController {
 
+	private static final String VIEW_SUFFIX = "producto-";
+
 	@Autowired
 	private ProductoService productoService;
 
 	@RequestMapping("/")
 	public String home(HttpServletRequest request) {
 		request.setAttribute("modo", "MODO_HOME");
-		return "busquedaProducto";
+		return VIEW_SUFFIX + "principal";
 	}
 
 	@RequestMapping("/consultar")
-	public String consultarProductos(@RequestParam("textoBusqueda") String text, 
+	public String consultarProductos(@RequestParam("textoBusqueda") String text,
 			HttpServletRequest request, RedirectAttributes redir) {
-		String returnPage = "busquedaProducto";
+		String returnPage = VIEW_SUFFIX + "principal";
 		try {
 			if(null == text || text.isEmpty()){
 				redir.addFlashAttribute("msg", Constantes.ERR_NOMBRE_PROD_NULO);
-				returnPage = "redirect:/productos/"; 
+				returnPage = "redirect:/productos/";
 			}
 			List<Producto> productos = productoService.filtrarProductosXNombre(text);
 			request.setAttribute("productos", productos);
@@ -53,22 +55,22 @@ public class ProductoController {
 	}
 
 	@RequestMapping("/agregar")
-	public String consultarProductos(@RequestParam int idProducto, 
+	public String consultarProductos(@RequestParam int idProducto,
 			HttpServletRequest request, RedirectAttributes redir) {
-		String returnPage = "busquedaProducto";
+		String returnPage = VIEW_SUFFIX + "principal";
 		try {
 			request.setAttribute("modo", "MODO_RECOMENDACION");
 			List<Producto> productosRecomendados = productoService.buscarProductosRecomendadosXIdProducto(idProducto);
-			
+
 			// Ordenar Productos
 			ProductoSorterContext sorterContext = new ProductoSorterContext();
 			sorterContext.setSortStrategy(new ProdFVencimientoSorterStrategy());
 			sorterContext.sortProducto(productosRecomendados);
-			
+
 			if(productosRecomendados.size() >= 4){
 				productosRecomendados = productosRecomendados.subList(0, 4);
 			}
-			
+
 			request.setAttribute("productoAgregado", productoService.buscarProdcuctoXId(idProducto));
 			request.setAttribute("productosRecomendados", productosRecomendados);
 			if (productosRecomendados.size() > 0) {
@@ -78,7 +80,7 @@ public class ProductoController {
 			redir.addFlashAttribute("msg", Constantes.ERR_GENERICO);
 			returnPage = "redirect:/productos/";
 			e.printStackTrace();
-		} 
+		}
 		return returnPage;
 	}
 

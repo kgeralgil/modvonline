@@ -17,26 +17,24 @@ public class AnalisisService {
 
 	@Autowired
 	AnalisisRepository analisisRepository;
-	
+
 	public List<ProductoDescuento> ConsultarProductosEnDescuento(int estado) {
 		return analisisRepository.ConsultarProductosEnDescuento(estado);
 	}
-	
+
 	public List<ProductosParaDescuentoDiario> ConsultarProductosParaDescuentoDiario(Date fechaIni, Date fechaFin) {
 		return analisisRepository.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
 	}
 
 	public void agregarDescuentoDiario(ProductoDescuento productoDescuento) {
-		
 		analisisRepository.agregarDescuentoDiario(productoDescuento);
-		
 	}
+
 	public void eliminarDescuentoDiario(int idProducto) {
 		analisisRepository.eliminarDescuentoDiario(idProducto);
 	}
 
 	public int consultarProductosParaDescuentoDiario(int idProducto) {
-		// TODO Auto-generated method stub
 		return analisisRepository.consultarProductosParaDescuentoDiario(idProducto);
 	}
 

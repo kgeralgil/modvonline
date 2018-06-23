@@ -2,7 +2,6 @@ package org.tottus.ventaonline.dao;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -45,5 +44,5 @@ public class DescuentoRowMapper implements RowMapper<Descuento> {
 		descuento.setDiasVigencia(rs.getInt("diasVigencia"));
 		return descuento;
 	}
-	
+
 }

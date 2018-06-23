@@ -4,7 +4,7 @@ public class Constantes {
 
 	// REGEX
 	public static final String REGEX_SOLO_NUMEROS = "^[0-9]*$";
-	
+
 	// MENSAJES ERROR
 	public static final String ERR_SOLO_NUMEROS = "El valor ingresado debe contener solo números.";
 	public static final String ERR_CANTIDAD_INEXACTA = "Longitud inadecuada para el campo.";
@@ -16,18 +16,10 @@ public class Constantes {
 	public static final String ERR_STOCK_INSUFICIENTE = "Las unidades a agregar a Descuento Diario no debe exceder el 30% del Stock Actual";
 	public static final String ERR_NOMBRE_PROD_NULO = "Para brindarte un mejor servicio, te invitamos a que ingreses el nombre del producto.";
 	public static final String ERR_GENERICO = "Estamos trabajando para brindarle un mejor servicio. Te invitamos a que visites nuestra sección de Productos http://www.tottus.com.pe/";
-	
 	public static final String MSG_PRODUCTO_ACTUALIZADO = "Se actualizó la información correctamente";
-	
 	public static final String ERR_PRODUCTO_TIENE_DESCUENTO = "El producto elegido ya cuenta con un descuento activo";
-	
-	//public static final String MSG_PRODUCTO_ELIMINADO_DESCUENTODIARIO = "Producto retirado de la lista de descuento diario";
-	//public static final String MSG_PRODUCTO_AGREGADO_DESCUENTODIARIO  = "Producto agregado a la lista de descuento diario";
-
 	public static final String ERR_FECHA_INCORRECTAS = "Fecha Inicial no puede ser mayor a la fecha Final";
-
 	public static final String ERR_DIAS_VIGENCIAS_FUERARANGO = "Días de vigencias puede tener valores entre 3 y 15";
-
 	public static final String ERR_PORCENTAJE_INVALIDO = "Porcentaje de Descuento inválido";
-	
+
 }
