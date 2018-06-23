@@ -59,8 +59,10 @@ public class AnalisisRepository {
 				+ "(sp.stock-sum(vd.cantidad)) as 'stockActual',"
 				+ " sum(vd.cantidad) /(( sp.stock * DATEDIFF(now(),sp.fechaCreacion))/sp.vigenciaStockSolicitado) as 'porcentajeVenta' "
 				+ " FROM tottus.stockproducto sp join ventadetalle vd on sp.idProducto=vd.idProducto"
-				+ " join venta v on vd.idVenta=v.idVenta" + " join producto pr on sp.idProducto=pr.idProducto where "
-				+ " sp.fechaCreacion between ? and ?";
+				+ " join venta v on vd.idVenta=v.idVenta" + " join producto pr on sp.idProducto=pr.idProducto";
+		if(null != fechaIni && null != fechaFin){
+			sql += " where sp.fechaCreacion between ? and ?";
+		}
 
 		RowMapper<ProductosParaDescuentoDiario> mapper = new RowMapper<ProductosParaDescuentoDiario>() {
 			public ProductosParaDescuentoDiario mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -72,8 +74,11 @@ public class AnalisisRepository {
 				return prDescuento;
 			}
 		};
-
-		return jdbcTemplate.query(sql, new Object[] { fechaIni, fechaFin }, mapper);
+		if(null != fechaIni && null != fechaFin){
+			return jdbcTemplate.query(sql, new Object[] { fechaIni, fechaFin }, mapper);
+		} else {
+			return jdbcTemplate.query(sql, mapper);
+		}
 
 	}
 

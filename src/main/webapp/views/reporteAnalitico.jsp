@@ -3,39 +3,43 @@
 <!DOCTYPE html>
 <form method="post" action="<c:url value='/analisis/consultar' />">
 <h5>Estadística de Ventas Online</h5>
-	<div
-		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-
-		<div class="input-group mb-3" style="margin: 15px;">
-
-			<label for="fechaIni">Fecha Inicial :</label> <input name="fechaIni"
-				type="date" class="form-control" pattern="dd/MM/yyyy"
-				placeholder="dd/mm/yyyy" />
-
+	<div class="d-flex justify-content-between
+		flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<div class="col-sm-5" style="margin: 15px;">
+			<label for="fechaIni">Fecha Inicio: </label><br/>
+			<input name="fechaIni" type="date" class="form-control"
+				pattern="dd/MM/yyyy" placeholder="dd/mm/yyyy" />
 		</div>
-
-		<div class="input-group mb-3" style="margin: 15px;">
-
-			<label for="fechaFin">Fecha Final :</label> <input name="fechaFin"
-				type="date" class="form-control" pattern="dd/MM/yyyy"
-				placeholder="dd/mm/yyyy" />
+		<div class="col-sm-5" style="margin: 15px;">
+			<label for="fechaFin">Fecha Fin: </label><br/>
+			<input name="fechaFin" type="date" class="form-control"
+				pattern="dd/MM/yyyy" placeholder="dd/mm/yyyy" />
 		</div>
-		<div class="input-group mb-3" style="margin: 15px;">
-			<input class="btn btn-outline-secondary" type="submit"
-				value="Ver Reporte" />
+		<div class="col-sm-2" style="margin: 15px;">
+			<input class="btn btn-outline-secondary" type="submit" value="Ver Detalle" />
 		</div>
 	</div>
 </form>
 
 <div class="container">
 	<c:if test="${CproductosParaDescuento=='MODO_VACIO'}">
-		<h6>No hay productos con niveles de venta inferiores al esperado</h6>
+		<div class="row">
+			<b>Productos con nivel bajo en ventas</b>
+			<table class="table table-bordered" title="Productos con nivel bajo en ventas">
+				<tr class="table-success">
+					<th class="table-hover">&nbsp;</th>
+				</tr>
+				<tr>
+					<td>No hay productos con niveles de venta inferiores al esperado</td>
+				</tr>
+			</table>
+		</div>
 	</c:if>
 	<c:if test="${CproductosParaDescuento=='MODO_CONSULTA'}">
 		<div class="row">
-			Productos con Nivel Bajo en Venta
+			<b>Productos con nivel bajo en ventas</b>
 			<table class="table table-bordered"
-				title="Productos con Nivel Bajo en Venta">
+				title="Productos con nivel bajo en ventas">
 				<tr class="table-success">
 					<th class="table-hover">Producto</th>
 					<th>Porcentaje de Venta</th>
@@ -52,7 +56,7 @@
 						<td>
 							<button type="button" data-toggle="modal"
 								data-id="${producto.idProducto}" data-target="#agregarDescuento"
-								class="agregar-descuento btn btn-primary">agregar</button>
+								class="agregar-descuento btn btn-primary">Agregar</button>
 
 							<div class="modal fade" id="agregarDescuento" tabindex="-1"
 								role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -68,7 +72,7 @@
 											</button>
 										</div>
 										<div class="modal-body">
-											<form method="get"
+											<form method="get" id="formAddProd"
 												action="<c:url value='/analisis/agregar-descuento'/>">
 												<div class="form-group">
 													<label for="idProducto">Id Producto</label> <input
@@ -82,7 +86,7 @@
 														placeholder="Descuento Aplicado">
 												</div>
 												<div class="form-group">
-													<label for="cantidadDisponible">Stock</label> <input
+													<label for="cantidadDisponible">Stock Disponible</label> <input
 														type="number" class="form-control" id="cantidadDisponible"
 														name="cantidadDisponible" placeholder="Stock" min="1"
 														required="required">
@@ -96,7 +100,7 @@
 												</div>
 
 												<div class="modal-footer">
-													<button type="reset" class="btn btn-primary">Cancelar</button>
+													<button type="button" id="closeModal" class="btn btn-primary">Cancelar</button>
 													<button type="submit" class="btn btn-primary">Agregar</button>
 												</div>
 
@@ -123,7 +127,7 @@
 	<c:if test="${cproductosEnDescuento=='MODO_LISTA'}">
 
 		<div class="row">
-			Descuentos Diarios
+			<b>Descuentos Diarios</b>
 			<table class="table table-bordered" title="Descuentos Diarios">
 				<tr class="table-success">
 					<th class="table-hover">Producto</th>
@@ -138,7 +142,7 @@
 					<tr>
 						<td>${producto.descProducto}</td>
 						<td>${producto.fechaCreacion}</td>
-						<td><fmt:formatNumber type="percent" maxFractionDigits="2" pattern="###.##" 
+						<td><fmt:formatNumber type="percent" maxFractionDigits="2" pattern="###.##"
 								value="${producto.pctDescuento}" />%</td>
 						<td>${producto.cantDisponible}</td>
 						<td>${producto.diasVigencia}</td>
@@ -206,5 +210,11 @@
 	$(document).on("click", ".eliminar-descuento", function() {
 		var idProducto = $(this).data('id');
 		$(".modal-body #idProductoEliminar").val(idProducto);
+	});
+	$(function(){
+		$("#closeModal").click(function(){
+			$("#formAddProd")[0].reset();
+			$("#agregarDescuento").modal("hide");
+		});
 	});
 </script>

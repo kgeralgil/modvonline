@@ -54,15 +54,12 @@ public class AnalisisController {
 			@RequestParam(name = "fechaIni") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaIni,
 			@RequestParam(name = "fechaFin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaFin,
 			HttpServletRequest request,RedirectAttributes redir) {
-
 		try {
-
-			if (fechaFin.before(fechaIni)) {
+			if ((null != fechaFin && fechaIni != null) && fechaFin.before(fechaIni)) {
 				request.setAttribute("msg", Constantes.ERR_FECHA_INCORRECTAS);
 			} else {
 				productos = analisisService.ConsultarProductosParaDescuentoDiario(fechaIni, fechaFin);
 				request.getSession().setAttribute("productosParaDescuento", productos);
-				System.out.println("Productos para descuento " + productos.size());
 				if (productos.size() <= 1 && productos.get(0).getStockActual() == 0) {
 					request.setAttribute("CproductosParaDescuento", "MODO_VACIO");
 				} else {
@@ -90,8 +87,6 @@ public class AnalisisController {
 			@RequestParam(name = "diasVigencia") int diasvigencia, HttpServletRequest request) {
 
 		if (analisisService.consultarProductosParaDescuentoDiario(idProducto) == 0) {
-			System.out.println("Productos para descuento * " + productos.size());
-			System.out.println("Producto en descuento * " + productosEnDescuentoDiario.size());
 			boolean errorStock = false;
 
 			ProductoDescuento productoDescuento = new ProductoDescuento();
@@ -112,15 +107,12 @@ public class AnalisisController {
 				}
 			}
 			if (errorStock == false) {
-
-				// RN019: Sólo se puede ingresar un máximo de 10 productos a
-				// descuentos,
-				// diarios por ventas bajas.
-				if (productosEnDescuentoDiario.size() == 10) {
+				// RN019: Sólo se puede ingresar un máximo de 10 productos a descuentos, diarios por ventas bajas.
+				if (productosEnDescuentoDiario.size() >= 10) {
 					request.setAttribute("msg", Constantes.ERR_MAX10_PRODUCTOSDIARIOS);
-				}else if (productoDescuento.getDiasVigencia()<3||productoDescuento.getDiasVigencia()>15) {
+				} else if (productoDescuento.getDiasVigencia()<3||productoDescuento.getDiasVigencia()>15) {
 					request.setAttribute("msg", Constantes.ERR_DIAS_VIGENCIAS_FUERARANGO);
-				}else if (productoDescuento.getPctDescuento()==0||productoDescuento.getPctDescuento()>=100) {
+				} else if (productoDescuento.getPctDescuento()<=0||productoDescuento.getPctDescuento()>=100) {
 					request.setAttribute("msg", Constantes.ERR_PORCENTAJE_INVALIDO);
 				} else {
 					analisisService.agregarDescuentoDiario(productoDescuento);
