@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:text="Ingrese la dirección IP del servidor"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/edt_address"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btn_enter"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white"
+        android:text="Ingresar"
+        android:layout_marginTop="10dp"/>
+
+
+</LinearLayout>

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -38,6 +39,7 @@ import pe.edu.upc.tottus.models.Product;
 import pe.edu.upc.tottus.network.ApiService;
 import pe.edu.upc.tottus.utils.DeviceUtil;
 import pe.edu.upc.tottus.utils.ImageUtil;
+import pe.edu.upc.tottus.utils.PersistentUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,7 +98,7 @@ public class SearchQRFragment extends Fragment implements View.OnClickListener {
         } else {
             builder = new AlertDialog.Builder(getContext());
         }
-        builder.setTitle("Error")
+        builder.setTitle("Alerta")
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -117,7 +119,11 @@ public class SearchQRFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
 
-        AndroidNetworking.post(ApiService.DISCOUNT_URL + code)
+        String address = PersistentUtil.getAddress(getContext());
+
+        Toast.makeText(getContext(), ApiService.DOMAIN + address + ApiService.DISCOUNT_URL, Toast.LENGTH_LONG).show();
+
+        AndroidNetworking.post(ApiService.DOMAIN + address + ApiService.DISCOUNT_URL + code)
                 .addJSONObjectBody(jsonObject)
                 .addHeaders("Content-Type", "application/json")
                 .setTag(getString(R.string.app_name))

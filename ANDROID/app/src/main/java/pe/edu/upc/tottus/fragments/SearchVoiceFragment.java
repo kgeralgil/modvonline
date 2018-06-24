@@ -36,6 +36,7 @@ import pe.edu.upc.tottus.adapters.ProductAdapter;
 import pe.edu.upc.tottus.models.Product;
 import pe.edu.upc.tottus.network.ApiService;
 import pe.edu.upc.tottus.utils.DeviceUtil;
+import pe.edu.upc.tottus.utils.PersistentUtil;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -113,7 +114,7 @@ public class SearchVoiceFragment extends Fragment {
                         getProduct(result);
                     }
 
-                    Toast.makeText(getContext(), result.get(0), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), result.get(0), Toast.LENGTH_SHORT).show();
                 }
                 break;
             }
@@ -128,7 +129,7 @@ public class SearchVoiceFragment extends Fragment {
         } else {
             builder = new AlertDialog.Builder(getContext());
         }
-        builder.setTitle("Error")
+        builder.setTitle("Alerta")
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -153,7 +154,11 @@ public class SearchVoiceFragment extends Fragment {
             e.printStackTrace();
         }
 
-        AndroidNetworking.post(ApiService.VOICE_URL)
+        String address = PersistentUtil.getAddress(getContext());
+
+        Toast.makeText(getContext(), ApiService.DOMAIN + address + ApiService.VOICE_URL, Toast.LENGTH_LONG).show();
+
+        AndroidNetworking.post(ApiService.DOMAIN + address + ApiService.VOICE_URL)
                 .addJSONObjectBody(jsonObject)
                 .addHeaders("Content-Type", "application/json")
                 .setTag(getString(R.string.app_name))
@@ -175,7 +180,7 @@ public class SearchVoiceFragment extends Fragment {
                             if (response.isNull("productos")) {
                                 productAdapter.setProductList(productList);
                                 productAdapter.notifyDataSetChanged();
-                                showAlert("No se encontraron datos");
+                                showAlert("No se encontraron productos");
                                 return;
                             }
 
@@ -185,12 +190,14 @@ public class SearchVoiceFragment extends Fragment {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            showAlert("No se encontraron productos");
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
                         Log.e(getString(R.string.app_name), anError.getLocalizedMessage());
+                        showAlert("No se encontraron productos");
                     }
                 });
     }
