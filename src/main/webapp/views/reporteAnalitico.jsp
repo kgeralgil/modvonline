@@ -2,16 +2,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <form method="post" action="<c:url value='/analisis/consultar' />">
-<h5>Estadística de Ventas Online</h5>
+<h5>Estad&iacute;stico de Ventas Online</h5>
 	<div class="d-flex justify-content-between
 		flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 		<div class="col-sm-4" style="margin: 15px;">
-			<label for="fechaIni">Fecha Inicio: </label><br/>
+			<label for="fechaIni">Fecha Inicio:</label><br/>
 			<input name="fechaIni" type="date" class="form-control"
 				pattern="dd/MM/yyyy" placeholder="dd/mm/yyyy" />
 		</div>
 		<div class="col-sm-4" style="margin: 15px;">
-			<label for="fechaFin">Fecha Fin: </label><br/>
+			<label for="fechaFin">Fecha Fin:</label><br/>
 			<input name="fechaFin" type="date" class="form-control"
 				pattern="dd/MM/yyyy" placeholder="dd/mm/yyyy" />
 		</div>

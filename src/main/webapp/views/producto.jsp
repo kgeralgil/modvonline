@@ -7,14 +7,13 @@
 	<div
 		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 
-		<div class="input-group mb-3">
-			<label>Nombre de Producto :</label> <input name="textoBusqueda"
-				type="text" class="form-control"
+		<div class="col-sm-11">
+			<label>Nombre de Producto :</label> 
+			<input name="textoBusqueda" type="text" class="form-control"
 				placeholder="Escribe aqui el producto a consultar" />
-			<div class="input-group-append">
-				<input class="btn btn-outline-secondary" type="submit"
-					value="Consultar" />
-			</div>
+		</div>
+		<div class="col-sm-1">
+			<input class="btn btn-outline-secondary" type="submit" value="Consultar" />
 		</div>
 	</div>
 </form>
